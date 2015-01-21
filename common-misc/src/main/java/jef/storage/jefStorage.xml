@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+使用方法一
+   本文件只为在Java Application中，通过初始化BeanFactory，并且加载到静态变量中，从而实现 FileManage 单实例模式。
+   通过工厂类 FileServiceFactory可以得到这个实例。
+   当您在其他Spring的系统中使用本包时，请使用方法二。
+
+使用方法二
+    在Web应用或其他基于Spring 的应用系统中，
+应当将下面的两个Bean加入到应用的Spring配置中去，即在应用的Spring Context实现FileManage的持久化
+不需要使用工厂类来得到实例。
+由于JEF-IOC框架也可以实现Spring的基本功能，实际使用时可以出现以下组合：
+JEF-IOC+IBATIS / JEF-IOC + ORM /SPRING + IBATIS/ SPRING + JEF-ORM
+-->
+<beans>
+	<bean id="fileManager" class="jef.storage.FileManager">
+	   <property name="fileDAO" ref="fileDAO"/> 
+	   <property name="applicationName" value="PIMS"/>
+	</bean>
+
+	<!--这使用是Ibatis连接数据库时的DAO实现类，也可以作为 JEF-IOC 框架支持Ibatis的一个例子。
+	JEF-IOC 与 Ibatis的整合方式如下：
+	首先声明一个bean,class 为“jef.ioc.context.support.IbatisSqlClientFactory”，指定Ibatis的配置文件路径。
+	IbatisSqlClientFactory是JEF的一个工厂类，专门为初始化Ibatis SqlMapClient而设计。
+	然后IbatisFileDAO 必须继承IbatisSqlMapDaoSupport，一旦继承了这个基类，JEF在初始化Bean时，就会自动注入由工厂类生产SqlMapClient。
+	-->
+	<!--
+	<bean id="fileDAO" class="jef.storage.ibatis.IbatisFileDAO"/>
+	<bean class="jef.ioc.context.support.IbatisSqlClientFactory">
+		<property name="configLocation" value="/jef/storage/ibatis/SqlMapConfig.xml" />
+	</bean>
+	-->
+
+	<!--这使用是JEF-ORM框架时的DAO实现类，也可以作为 JEF-IOC 框架中使用 JEF-ORM实现Dao支持的一个例子。
+	JEF-IOC 与 JEF-ORM 的整合方式如下：
+	1. 首先声明一个bean, dbClient。这个就是JEF的数据库操作接口。
+	下面的例子中使用了不带参数的构造方法，数据库各项参数会自jef.properties中读取。 也可以使用带参数构造，从而指定数据库、用户名、口令等。
+	2. 然后定义了一个抽象动作：jefBaseDAO. 这个Bean和在Spring中一样，是不会被初始化的。
+	3. FileDaoImpl 的parent 为jefBaseDAO，这样就会将 dbClient 注入。从而可以操作数据库。
+	
+	由于JEF-IOC的BeanFactory的配置是Spring的功能的子集，因此这些配置完全兼容Spring，如果要在Spring框架中使用JEF-ORM也可以这样配置。
+	-->
+	<bean id="fileDAO" class="jef.storage.FileDaoImpl"/>
+	<bean id="dbClient" class="jef.database.DbClient">
+	 	<property name="fileManager" ref="fileManager"/> 
+	</bean>
+</beans>

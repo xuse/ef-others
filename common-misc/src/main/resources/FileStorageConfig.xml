@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FileSystem>
+	<!-- 系统会自动生成一个确省的Application，不配置也可以 -->
+	
+	<Application name="DBM" directory="${user.dir}">
+		<!-- 存放路径(相对Application的路径) -->
+		<directory>/stroage</directory>
+		<!-- 存放格式(相对Application的路径) -->
+		<storageType>zipFile</storageType>
+		<!-- 分目录的方式，可取值为 
+			FILENAME_HASH 对文件名hash后命名文件夹
+			Y1 年一级目录，路径为 /YYYY"
+			YM2 年月二级目录形式，路径为 /YYYY/MM
+			YMD3 年月日三级目录形式，路径为 /YYYY/MM/DD
+			YMDH4 年月日时 四级目录形式，路径为 YYYY/MM/DD/HH -->
+		<dirStructure>YMD3</dirStructure>
+		<storageFileNaming>GUID</storageFileNaming>
+		<noCompress enable="true">
+			<fileTypes><!-- 如果启用了压缩功能，对于如下格式的文件不作压缩处理 -->
+				<fileType ext="exe">可执行文件</fileType>
+				<fileType ext="com">可执行文件</fileType>
+				<fileType ext="jpg">图片文件</fileType>
+				<fileType ext="gif">图片文件</fileType>
+				<fileType ext="zip">压缩文件</fileType>
+				<fileType ext="rar">压缩文件</fileType>
+			</fileTypes>
+		</noCompress>
+	</Application>
+</FileSystem>

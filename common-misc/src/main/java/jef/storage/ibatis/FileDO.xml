@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+ 
+<sqlMap namespace="FileDO">
+	<typeAlias alias="fileDO" type="jef.storage.JFile" />
+	<resultMap class="fileDO" id="get-filedo">
+		<result property="uuid" column="uuid" />
+		<result property="storageFolder" column="storageFolder" />
+		<result property="realName" column="realName" />
+		<result property="description" column="description" />
+		<result property="createTime" column="createTime" />
+		<result property="applicationCode" column="applicationCode" />
+		<result property="storageType" column="storageType" />
+	</resultMap>
+
+	<insert id="insertFile" parameterClass="fileDO">
+		insert into jfile(
+		uuid , realName, createTime, description, 
+		storageFolder,applicationCode,storageType )
+		values( #uuid#, #realName#, #createTime#, #description#,
+		#storageFolder#,#applicationCode#, #storageType#)
+	</insert>
+	
+	<select id="getFileDObyFileID" resultMap="get-filedo" parameterClass="java.lang.String">
+		select * from jfile where uuid=#value#
+    </select>
+
+	<delete id="deleteFile" parameterClass="java.lang.String">
+		delete from jfile where uuid=#value#
+ 	</delete>
+ 	
+ 	<select id="getFdoByAppCode" resultMap="get-filedo" parameterClass="java.lang.String">
+		select * from jfile where applicationCode=#value#
+    </select>
+ 	
+</sqlMap>

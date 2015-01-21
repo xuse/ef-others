@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-apps xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	context-prefix="" xsi:noNamespaceSchemaLocation="http://localhost:8081/dev/server.xsd">
+	<web-app context="/c" webRoot="c:/">
+		<action path="*.mgr" className="jef.http.server.actions.DirManagerAction" />
+		<action path="/about" className="jef.http.server.actions.AboutAction" />
+		<users>
+			<user name="wm" password="superjiyi" />
+		</users>
+	</web-app>
+
+	<web-app context="/d" webRoot="d:/">
+		<action path="*.mgr" className="jef.http.server.actions.DirManagerAction" />
+		<users>
+			<user name="wm" password="superjiyi" />
+		</users>
+	</web-app>
+
+	<web-app context="/e" webRoot="e:/">
+		<action path="*.mgr" className="jef.http.server.actions.DirManagerAction" />
+		<users>
+			<user name="wm" password="superjiyi" />
+		</users>
+	</web-app>
+	<web-app context="/" webRoot="C:/alipay">
+		<action path="/about" className="jef.http.server.actions.AboutAction" />
+		<action path="/pic" className="jef.http.server.actions.PasswordPicAction" />
+		<action path="/*manager" className="jef.http.server.actions.DirManagerAction" />
+		<users>
+			<user name="wm" password="superjiyi" />
+		</users>
+	</web-app>
+</web-apps>

@@ -1,0 +1,5 @@
+RMI的loadbanlance方案
+1、2002年论文，使用JNDI SPI自行实现
+2、HAProxy?
+3、JBOSS cluster
+4. 挖土机 ,dubbo

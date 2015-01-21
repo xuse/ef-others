@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="unqualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<xs:element name="web-apps">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="web-app" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="web-app">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="action" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="users" minOccurs="0" maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="action">
+		<xs:complexType>
+			<xs:attribute name="path" type="xs:string" />
+			<xs:attribute name="className" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="users">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="user" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="user">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" />
+			<xs:attribute name="password" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema> 
