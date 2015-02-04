@@ -11,6 +11,8 @@ import jef.codegen.pdm.model.MetaModel;
 import jef.codegen.pdm.model.MetaTable;
 import jef.common.JefException;
 import jef.database.DbClient;
+import jef.database.DbMetaData;
+import jef.database.meta.ForeignKey;
 import jef.database.meta.TableInfo;
 
 public interface MetaProvider{
@@ -39,9 +41,10 @@ public interface MetaProvider{
 		}
 		public Metadata getTableMetadata(String tablename) throws SQLException {
 			Metadata data=new Metadata();
-			data.setColumns(db.getMetaData(null).getColumns(tablename,true));
-			data.setPrimaryKey(db.getMetaData(null).getPrimaryKey(tablename));
-			data.setForeignKey(db.getMetaData(null).getForeignKey(tablename));
+			DbMetaData meta=db.getMetaData(null);
+			data.setColumns(meta.getColumns(tablename,true));
+			data.setPrimaryKey(meta.getPrimaryKey(tablename));
+			data.setForeignKey(meta.getForeignKey(tablename).toArray(new ForeignKey[0]));
 			return data;
 		}
 
