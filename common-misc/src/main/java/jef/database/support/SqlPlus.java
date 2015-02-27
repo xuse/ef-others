@@ -292,7 +292,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				Collection<Index> is = meta.getIndexes(tableName);
 				LogUtil.show("======= Table " + tableName + " has " + is.size() + " indexes. ========");
 				for (Index i : is) {
-					LogUtil.show(StringUtils.rightPad(i.getIndexName(), 10) + "\t" + StringUtils.rightPad(StringUtils.join(i.getColumnName(), ','), 10) + "\t" + (i.isUnique() ? "Uniqie" : "NonUnique") + (i.isOrderAsc() ? " Asc" : " Desc") + "\t" + i.getType());
+					LogUtil.show(i);
 				}
 				timming();
 			} else {
