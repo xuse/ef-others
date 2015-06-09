@@ -3,15 +3,16 @@ package jef.pdm;
 import java.io.File;
 import java.io.IOException;
 
-import jef.codegen.pdm.IMetaLoader;
-import jef.codegen.pdm.PDMetaLoader;
-import jef.codegen.pdm.model.MetaModel;
-import jef.codegen.pdm.model.MetaTable;
 import jef.common.JefException;
 import jef.common.log.LogUtil;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.github.geequery.codegen.pdm.IMetaLoader;
+import com.github.geequery.codegen.pdm.PDMetaLoader;
+import com.github.geequery.codegen.pdm.model.MetaModel;
+import com.github.geequery.codegen.pdm.model.MetaTable;
 
 public class PDMTest {
 	private String file = "E:/data_model/数据模型设计-PDM/backup/Customer_Domain.pdm";

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 package jef.codegen.shell;
-
 import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import jef.codegen.Junit4Generator;
+import com.github.geequery.codegen.Junit4Generator;
 import jef.ui.swing.PanelWrapper;
 
 import org.apache.commons.lang.StringUtils;

@@ -20,11 +20,12 @@ import java.sql.SQLException;
 
 import javax.swing.JFileChooser;
 
-import jef.codegen.EntityGenerator;
-import jef.codegen.MetaProvider.DbClientProvider;
 import jef.common.log.LogUtil;
-import jef.database.DbClientFactory;
+import jef.database.DbClientBuilder;
 import jef.ui.swing.PanelWrapper;
+
+import com.github.geequery.codegen.EntityGenerator;
+import com.github.geequery.codegen.MetaProvider.DbClientProvider;
 
 public class EntityGeneratorShell extends BaseModelGenerator {
 	public EntityGeneratorShell() {
@@ -46,7 +47,7 @@ public class EntityGeneratorShell extends BaseModelGenerator {
 		
 		EntityGenerator g = new EntityGenerator();
 		try {
-			g.setProvider(new DbClientProvider(DbClientFactory.getDbClient(dbType, host, 0, sid, user, password)));
+			g.setProvider(new DbClientProvider(new DbClientBuilder(dbType, host, 0, sid, user, password).build()));
 //			g.setProfile(DbmsProfile.Oracle);
 			g.addExcludePatter(".*_\\d+$"); //防止出现分表
 			g.addExcludePatter("AAA");      //排除表

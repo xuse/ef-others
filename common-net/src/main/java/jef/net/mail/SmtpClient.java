@@ -49,9 +49,8 @@ public class SmtpClient extends MessageClient {
 			if (user != null && password != null) {
 				login();
 			}
-//			if (showText)startReadThread();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Host:" +server +" connect error.",e);
 		}
 	}
 	

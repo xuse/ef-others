@@ -36,7 +36,7 @@ import javax.script.ScriptException;
 import jef.common.log.LogUtil;
 import jef.database.DbCfg;
 import jef.database.DbClient;
-import jef.database.DbClientFactory;
+import jef.database.DbClientBuilder;
 import jef.database.DbMetaData;
 import jef.database.IQueryableEntity;
 import jef.database.meta.Column;
@@ -81,20 +81,16 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 	}
 
 	public void start() throws IOException {
-		LogUtil.commonDebugAdapter=false;
+		LogUtil.commonDebugAdapter = false;
 		if (db == null && StringUtils.isNotBlank(JefConfiguration.get(DbCfg.DB_NAME))) {
-			try {
-				db = DbClientFactory.getDbClient();
-				LogUtil.show("database connected.");
-			} catch (SQLException e) {
-				LogUtil.show("Error!:" + e.getMessage());
-			}
+			db = new DbClientBuilder(false).build();
+			LogUtil.show("database connected.");
 		}
 
 		if (parent == null) { // 没有上级Shell的情况下，自己启动Shell.
 			withMyShell(db);
 			if (parent == null && db != parent && db.isOpen()) {
-					db.close();
+				db.close();
 			}
 			LogUtil.show("exited");
 			closeSpool();
@@ -111,13 +107,13 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 		System.out.print(getPrompt());
 		do {
 			String str = readline(br);
-//			if (StringUtils.isBlank(str))
-//				continue;
+			// if (StringUtils.isBlank(str))
+			// continue;
 			ret = perform(str, true);
 		} while (ret != ShellResult.TERMINATE);
 	}
 
-	private void closeSpool()  {
+	private void closeSpool() {
 		if (spool != null) {
 			IOUtils.closeQuietly(spool);
 			LogUtil.removeOutput(spool);
@@ -128,7 +124,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 	private void createSpool(String fileName) {
 		try {
 			OutputStream os = new FileOutputStream(new File(fileName), false);
-			spool = new OutputStreamWriter(os,"UTF-8");
+			spool = new OutputStreamWriter(os, "UTF-8");
 			LogUtil.addOutput(spool);
 		} catch (IOException e) {
 			LogUtil.exception(e);
@@ -139,7 +135,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 	protected void executeEnd(String[] cmds, String last) {
 		if (last.endsWith("/")) {// 去掉结束符
 			last = last.substring(0, last.length() - 1);
-		}else if(last.indexOf(';')>-1){
+		} else if (last.indexOf(';') > -1) {
 			last = StringUtils.substringBefore(last, ";");
 		}
 		String s = StringUtils.join(cmds, "\n");
@@ -158,30 +154,30 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 
 		protected void execute() {
 			Preferences p = Preferences.userRoot().node("SqlPlus");
-			String connected=p.get("lastConnected", null);
-			String url=null;
-			String user=null;
-			String password=null;
-			if(connected!=null && connected.length()>0){
-				String[] params = connected==null?null:StringUtils.split(connected, "*");
-				url=params[0];
-				user=params[1];
-				password=params[2];
+			String connected = p.get("lastConnected", null);
+			String url = null;
+			String user = null;
+			String password = null;
+			if (connected != null && connected.length() > 0) {
+				String[] params = connected == null ? null : StringUtils.split(connected, "*");
+				url = params[0];
+				user = params[1];
+				password = params[2];
 			}
-			url = getInputWithDefaultValue("JDBC Url:",url);
-			if(StringUtils.isEmpty(url)){
+			url = getInputWithDefaultValue("JDBC Url:", url);
+			if (StringUtils.isEmpty(url)) {
 				return;
 			}
-			user = getInputWithDefaultValue("username:",user);
-			password = getInputWithDefaultValue("password:",password);
+			user = getInputWithDefaultValue("username:", user);
+			password = getInputWithDefaultValue("password:", password);
 			try {
-				DbClient client = new DbClient(url,user,password,3);
-				if (parent!=null && SqlPlus.this.db != ((SqlPlusSupport) parent).getDb()) {
+				DbClient client = new DbClientBuilder(url, user, password).build();
+				if (parent != null && SqlPlus.this.db != ((SqlPlusSupport) parent).getDb()) {
 					SqlPlus.this.db.close();
 				}
 				SqlPlus.this.db = client;
-				p.put("lastConnected", url+"*"+user+"*"+password);
-				caseConnected(db,url,user,password);
+				p.put("lastConnected", url + "*" + user + "*" + password);
+				caseConnected(db, url, user, password);
 			} catch (Exception e) {
 				LogUtil.exception(e);
 			}
@@ -193,24 +189,29 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 			ConnectConversation c = new ConnectConversation(this);
 			c.start();
 		} else if (str.equalsIgnoreCase(".schemas")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
 			LogUtil.show(StringUtils.join(db.getNoTransactionSession().getMetaData(null).getSchemas(), '\n'));
 			timming();
 		} else if (str.equalsIgnoreCase(".catlogs")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
 			LogUtil.show(StringUtils.join(db.getNoTransactionSession().getMetaData(null).getCatalogs(), '\n'));
 			timming();
 		} else if (str.equalsIgnoreCase(".tables")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
 			LogUtil.show(StringUtils.join(db.getNoTransactionSession().getMetaData(null).getTables(true), '\n'));
 			timming();
 		} else if (str.equalsIgnoreCase(".views")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
 			LogUtil.show(StringUtils.join(db.getNoTransactionSession().getMetaData(null).getViews(true), '\n'));
 			timming();
 		} else if (str.equalsIgnoreCase(".procedures")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
-			DbMetaData m=db.getNoTransactionSession().getMetaData(null);
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
+			DbMetaData m = db.getNoTransactionSession().getMetaData(null);
 			LogUtil.show("==== Procedures of User: " + m.getUserName() + " ====");
 			LogUtil.show(m.getProcedures(""));
 			timming();
@@ -218,7 +219,8 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 			String swith = StringUtils.substringAfter(str, "timming ").trim().toUpperCase();
 			timming = swith.equalsIgnoreCase("ON");
 		} else if (str.equalsIgnoreCase(".dbinfo")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
 			DbMetaData meta = db.getNoTransactionSession().getMetaData(null);
 			LogUtil.show("==== General Infomation ====");
 			LogUtil.show(meta.getDbVersion());
@@ -233,15 +235,16 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 		} else if (str.equalsIgnoreCase("help")) {
 			LogUtil.show(helpInfo);
 		} else if (str.startsWith(".create ")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
 			String[] args = StringUtils.substringAfter(str, ".create ").trim().split(" ");
-			if (args[0].length()==0)
+			if (args[0].length() == 0)
 				return ShellResult.CONTINUE;
 			String fileName = args[0];
 			try {
 				Class<?> c = Class.forName(fileName);
 				String tableName = (args.length > 1) ? args[1] : c.getSimpleName();
-				db.createTable(c.asSubclass(IQueryableEntity.class) , tableName,null);
+				db.createTable(c.asSubclass(IQueryableEntity.class), tableName, null);
 			} catch (ClassNotFoundException e) {
 				LogUtil.show("类" + fileName + "不存在。");
 			} catch (ClassCastException e) {
@@ -251,12 +254,13 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 			}
 			timming();
 		} else if (str.equalsIgnoreCase(".tablesize")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
-			DbMetaData m=db.getNoTransactionSession().getMetaData(null);
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
+			DbMetaData m = db.getNoTransactionSession().getMetaData(null);
 			Map<String, String> result = new HashMap<String, String>();
 			for (TableInfo table : m.getTables(true)) {
 				String sql = "select count(*) as count from " + table.getName();
-				long n = db.loadBySql(sql,Long.class);
+				long n = db.loadBySql(sql, Long.class);
 				result.put(table.getName(), String.valueOf(n));
 			}
 			LogUtil.show(result);
@@ -277,11 +281,12 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				}
 			}
 		} else if (str.startsWith("desc ")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
-			String tableName= db.getProfile().getObjectNameToUse(StringUtils.substringAfter(str, "desc ").trim());	
-			DbMetaData meta=db.getNoTransactionSession().getMetaData(null);
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
+			String tableName = db.getProfile().getObjectNameToUse(StringUtils.substringAfter(str, "desc ").trim());
+			DbMetaData meta = db.getNoTransactionSession().getMetaData(null);
 			if (meta.existTable(tableName)) {
-				List<Column> cs = meta.getColumns(tableName,true);
+				List<Column> cs = meta.getColumns(tableName, true);
 				LogUtil.show("======= Table " + tableName + " has " + cs.size() + " columns. ========");
 				for (Column c : cs) {
 					LogUtil.show(StringUtils.rightPad(c.getColumnName(), 10) + "\t" + StringUtils.rightPad(c.getDataType(), 9) + "\t" + c.getColumnSize() + "\t" + (c.isNullAble() ? "null" : "not null") + "\t" + c.getRemarks());
@@ -299,7 +304,8 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				LogUtil.show("Table " + tableName + " does not exist.");
 			}
 		} else if (str.startsWith("@")) {
-			if(!assertDb(db))return ShellResult.CONTINUE;
+			if (!assertDb(db))
+				return ShellResult.CONTINUE;
 			String filename = StringUtils.substringAfter(str, "@").trim();
 			File file = new File(filename);
 			if (!file.exists() && filename.indexOf(".") == -1) {
@@ -324,15 +330,15 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 		ShellResult result = ShellResult.CONTINUE;
 		try {
 			reader = IOUtils.getReader(file, null);
-			if(file.getName().endsWith(".js")){
-				ScriptEngine e=JavaScriptUtil.newEngine();
+			if (file.getName().endsWith(".js")) {
+				ScriptEngine e = JavaScriptUtil.newEngine();
 				e.put("db", db);
 				try {
 					e.eval(reader);
 				} catch (ScriptException e1) {
 					LogUtil.exception(e1);
 				}
-			}else{
+			} else {
 				String str;
 				while ((str = reader.readLine()) != null) {
 					if (str.startsWith("#") || str.startsWith("--") || str.startsWith("@")) {
@@ -345,7 +351,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 							LogUtil.show(e.getMessage());
 						}
 					}
-				}	
+				}
 			}
 		} catch (IOException e) {
 			LogUtil.exception(e);
@@ -368,8 +374,9 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 	}
 
 	private void executeSql(String str, DbClient db) throws SQLException {
-		if(!assertDb(db))return;
-		if (str.toUpperCase().startsWith("SELECT") || str.toUpperCase().startsWith("VALUES") || str.toUpperCase().startsWith("CALL")||str.toUpperCase().startsWith("(SELECT")) {
+		if (!assertDb(db))
+			return;
+		if (str.toUpperCase().startsWith("SELECT") || str.toUpperCase().startsWith("VALUES") || str.toUpperCase().startsWith("CALL") || str.toUpperCase().startsWith("(SELECT")) {
 			if (spool == null) {
 				LogUtil.show(db.getResultSet(str, JefConfiguration.getInt(JefConfiguration.Item.CONSOLE_SHOW_RESULT_LIMIT, 30)));
 			} else {
@@ -451,10 +458,10 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				ShellResult s = executeOtherCommand(str);
 				if (s.needProcess()) {
 					str = s.getCmd();
-					if (str.endsWith("/") || str.indexOf(';')>-1) {
+					if (str.endsWith("/") || str.indexOf(';') > -1) {
 						return RETURN_READY;
 					} else {
-						commandPool.add(str+"\n");
+						commandPool.add(str + "\n");
 					}
 				}
 			} catch (SQLException e) {

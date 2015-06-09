@@ -3,13 +3,14 @@ package jef.orm;
 import java.io.File;
 import java.sql.SQLException;
 
-import jef.codegen.EntityGenerator;
-import jef.codegen.MetaProvider.DbClientProvider;
 import jef.common.log.LogUtil;
-import jef.database.DbClient;
+import jef.database.DbClientBuilder;
 import jef.database.DbUtils;
 
 import org.junit.Test;
+
+import com.github.geequery.codegen.EntityGenerator;
+import com.github.geequery.codegen.MetaProvider.DbClientProvider;
 
 public class EntityGenerateTest {
 
@@ -27,7 +28,7 @@ public class EntityGenerateTest {
 			System.out.println(Thread.currentThread().getContextClassLoader());
 			System.out.println("DBUTILS");
 			System.out.println(DbUtils.class.getClassLoader());
-			g.setProvider(new DbClientProvider(new DbClient()));
+			g.setProvider(new DbClientProvider(new DbClientBuilder().build()));
 			g.addExcludePatter(".*_\\d+$");
 			g.addExcludePatter("AAA");
 			g.setMaxTables(4);

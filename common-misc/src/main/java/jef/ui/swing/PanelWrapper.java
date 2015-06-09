@@ -32,12 +32,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JTree;
 
 import jef.common.Callback;
 import jef.common.log.LogUtil;
 import jef.tools.IOUtils;
-import jef.ui.model.TreeNode;
 
 import org.apache.commons.lang.ObjectUtils;
 
@@ -119,17 +117,17 @@ public class PanelWrapper {
 		return logPanel;
 	}
 	
-	//创建一棵树
-	public JTree createTree(TreeNode node){
-		JPanel logPanel = new JPanel();
-		logPanel.setLayout(new FlowLayout(align,5, 0));
-//		for(JComponent w:widgets ){
-//			logPanel.add(w);	
-//		}
-//		c.add(logPanel);
-//		return logPanel;
-		return null;
-	}
+//	//创建一棵树
+//	public JTree createTree(TreeNode node){
+//		JPanel logPanel = new JPanel();
+//		logPanel.setLayout(new FlowLayout(align,5, 0));
+////		for(JComponent w:widgets ){
+////			logPanel.add(w);	
+////		}
+////		c.add(logPanel);
+////		return logPanel;
+//		return null;
+//	}
 	
 	/**
 	 * 添加一个字段

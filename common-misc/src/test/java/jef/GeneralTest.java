@@ -2,7 +2,6 @@ package jef;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 import jef.tools.XMLUtils;
 import jef.tools.reflect.ClassLoaderUtil;
@@ -16,7 +15,7 @@ public class GeneralTest {
 	public void ttt1() throws SAXException, IOException {
 		ClassLoaderUtil.addClassPath(new File("E:/MyWork/jef/easyframe-core/common-ioc/target/common-ioc-1.7.0-SNAPSHOT.jar"));
 		Document doc = XMLUtils.loadDocument("E:/MyWork/jef/chatserver/src/main/webapp/WEB-INF/web.xml");
-		XMLUtils.parseHTML(new URL("http://baidu.com"));
+//		XMLUtils.parseHTML(new URL("http://baidu.com"));
 
 	}
 }

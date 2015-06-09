@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.Socket;
 
 import jef.http.client.support.FilePart;
 import jef.http.client.support.HtmlPart;
@@ -83,5 +84,18 @@ public class SmtpTest {
 		
 		message.writeTo(pw, from, sendTo);
 		IOUtils.closeQuietly(pw);
+	}
+	
+
+	@Test
+	public void mailTest() throws AuthenticationException, IOException {
+//		Socket client = new Socket("mail.hikvision.com", 25);
+		
+		Socket  client= new Socket("hikml.hikvision.com.cn", 25);
+
+//		SmtpClient client=new SmtpClient("10.1.7.150", "jiyi", "Abc111");
+//		client.setDebugMode(true);
+//		client.open();
+//		client.close();
 	}
 }
