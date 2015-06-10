@@ -27,7 +27,7 @@ final class SchedulerImpl {
 	/**
 	 * 世界时区
 	 */
-	private TimeZone timezone = null;
+	private TimeZone timezone = TimeZone.getDefault();
 	/**
 	 * 状态标志，如果true表示任务调度运行
 	 */
@@ -94,6 +94,7 @@ final class SchedulerImpl {
 	 *            世界时区
 	 */
 	public void setTimeZone(TimeZone timezone) {
+		if(timezone==null)return;
 		this.timezone = timezone;
 	}
 
@@ -103,7 +104,7 @@ final class SchedulerImpl {
 	 * @return 世界时区
 	 */
 	public TimeZone getTimeZone() {
-		return timezone != null ? timezone : TimeZone.getDefault();
+		return timezone; 
 	}
 
 	/**
@@ -259,7 +260,7 @@ final class SchedulerImpl {
 	private void spawnExecutor(JobContextImpl jobContext, long referenceTimeInMillis) {
 		if (jobContext == null)
 			return;
-		TimerEvent event = new TimerEvent(referenceTimeInMillis);
+		TimerEvent event = new TimerEvent(referenceTimeInMillis, timezone);
 		execute(jobContext, event);
 	}
 
