@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -22,7 +23,7 @@ import org.slf4j.LoggerFactory;
  */
 final class JobContextImpl implements JobContext {
 
-	private static final Logger log = LoggerFactory.getLogger("hv-scheduler.Task");
+	private static final Logger log = LoggerFactory.getLogger("hv-scheduler.Job");
 	
 
 	// 运行锁
@@ -60,18 +61,30 @@ final class JobContextImpl implements JobContext {
 	private SchedulingPattern pattern;
 
 	/**
+	 * Job的唯一标识
+	 */
+	private String id;
+	
+	/**
 	 * 构造
 	 * 
 	 * @param job
 	 *            任务
+	 * @param pattern
+	 * @param id 任务iD，可以传入null，回自动生成一个随机ID 
 	 * @throws InvalidPatternException
 	 */
-	public JobContextImpl(Job job) throws InvalidPatternException {
+	public JobContextImpl(Job job,String pattern,String id) throws InvalidPatternException {
 		if (job == null) {
-			throw new NullPointerException("Can not input a null task entity to hv-scheduler!");
+			throw new NullPointerException("Can not input a null job entity to hv-scheduler!");
 		}
 		this.job = job;
-		this.pattern = new SchedulingPattern(job.getDefaultSchedulingPattern());
+		this.pattern = new SchedulingPattern(pattern);
+		
+		if(id==null || id.length()==0) {
+			id=job.getName()+"_"+UUID.randomUUID().toString().substring(0,8);
+		}
+		this.id=id;
 		if (job instanceof ListenableJob) {
 			((ListenableJob) job).setJobContext(this);
 		}
@@ -102,11 +115,8 @@ final class JobContextImpl implements JobContext {
 	 * 
 	 * @author shanguoming 2012-9-24 下午4:04:05
 	 * @return
-	 * @revised 2014-3-27
-	 *          Jiyi，该方法有危害性，获得TaskEntity后可以变更ID,执行计划，但Task中的pattern不会更新
-	 *          。因此要注意不可随意修改pattern
 	 */
-	public Job getTaskEntity() {
+	public Job getJob() {
 		return job;
 	}
 
@@ -127,7 +137,7 @@ final class JobContextImpl implements JobContext {
 					states.add(run(event));
 					//执行积压队列里的任务
 					while ((event = queues.poll()) != null) {
-						log.info("执行[{}]中排队的任务，事件类型：{}", job.getId(), event.getClass());
+						log.info("执行[{}]中排队的任务，事件类型：{}", job, event.getClass());
 						states.add(run(event));
 					}
 				} finally {
@@ -143,19 +153,19 @@ final class JobContextImpl implements JobContext {
 				case CallersRun:
 					//先尝试串行，如果积压过多直接并行。
 					if (queues.offer(event)) {
-						log.warn("任务[{}]正在运行，把事件[{}]放入队列", job.getId(), event.getClass().getName());
+						log.warn("任务[{}]正在运行，把事件[{}]放入队列", job, event.getClass().getName());
 					} else {
 						run(event).invokeCallback(log);
 					}
 					break;
 				case Discard:
 					//丢弃，忽略
-					log.warn("任务[{}]正在运行，事件[{}]被丢弃。", job.getId(), event.getClass().getName());
+					log.warn("任务[{}]正在运行，事件[{}]被丢弃。", job, event.getClass().getName());
 					break;
 				case QueuedOrDisacrd:
 					//尝试串行，失败后告警并回调
 					if (queues.offer(event)) {
-						log.warn("任务[{}]正在运行，把事件[{}]放入队列", job.getId(), event.getClass().getName());
+						log.warn("任务[{}]正在运行，把事件[{}]放入队列", job, event.getClass().getName());
 					} else {
 						callAbort(event);
 					}
@@ -170,7 +180,7 @@ final class JobContextImpl implements JobContext {
 					break;
 				}
 			} else {
-				log.warn("任务[{}]正在运行，不支持空Event事件放入队列", job.getId());
+				log.warn("任务[{}]正在运行，不支持空Event事件放入队列", job);
 			}	
 		}
 		
@@ -185,23 +195,23 @@ final class JobContextImpl implements JobContext {
 		}
 	}
 
-	private ExecutionState run(TriggerEvent taskEvent) {
+	private ExecutionState run(TriggerEvent event) {
 		// 更新当前状态
 		ExecutionState state = new ExecutionState(count.incrementAndGet());
-		if (taskEvent != null && (taskEvent instanceof FeedbackEvent)) {
-			state.feedback = (FeedbackEvent) taskEvent;
+		if (event != null && (event instanceof FeedbackEvent)) {
+			state.feedback = (FeedbackEvent) event;
 		}
 
 		try {
-			state.endSuccess(job.run(taskEvent));
+			state.endSuccess(job.run(event));
 			// 标记为成功
 		} catch (Throwable e) {
-			log.error("task error,task id=" + getId(), e);
+			log.error("Job error,job id=" + getId(), e);
 			state.endWithException(e);
 			// 标记为失败
 		} finally {
 			addHistory(state);
-			log.info("任务[{}]执行完成", job.getId());
+			log.info("任务[{}]执行完成", job);
 		}
 		return state;
 	}
@@ -219,7 +229,7 @@ final class JobContextImpl implements JobContext {
 	 * @return
 	 */
 	public String getId() {
-		return job.getId();
+		return id;
 	}
 
 	/**
@@ -246,6 +256,6 @@ final class JobContextImpl implements JobContext {
 	}
 
 	public String toString() {
-		return "Task[" + job + "]";
+		return "Job[" + job + "]";
 	}
 }

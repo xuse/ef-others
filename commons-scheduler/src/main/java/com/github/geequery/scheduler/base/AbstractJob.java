@@ -27,26 +27,10 @@ import com.github.geequery.scheduler.ListenableJob;
  * @modify: {原因} by shanguoming 2014年8月28日 上午9:36:54
  */
 public abstract class AbstractJob implements ListenableJob {
-	
-	private String schedulingPattern;
-	private String taskId;
 	/**
 	 * 任务信息上下文
 	 */
 	protected JobContext context;
-	
-	@Override
-	public String getDefaultSchedulingPattern() {
-		return schedulingPattern;
-	}
-	
-	public String getTaskId() {
-		return taskId;
-	}
-	
-	public void setTaskId(String taskId) {
-		this.taskId = taskId;
-	}
 	
 	@Override
 	public void setJobContext(JobContext context) {
@@ -54,12 +38,12 @@ public abstract class AbstractJob implements ListenableJob {
 	}
 	
 	/**
-	 * 返回TaskContext对象，
-	 * 用户可以从 TaskContext对象中获得任务执行的次数、时间等统计信息
+	 * 返回JobContext对象，
+	 * 用户可以从 JobContext对象中获得任务执行的次数、时间等统计信息
 	 * @return 任务上下文
 	 * @see JobContext
 	 */
-	public JobContext getTaskContext() {
+	public JobContext getJobContext() {
 		return context;
 	}
 }

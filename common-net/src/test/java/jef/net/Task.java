@@ -1,6 +1,5 @@
 package jef.net;
 
-import java.util.List;
 
 public class Task {
 	Object compare;

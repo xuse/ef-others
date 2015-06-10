@@ -123,14 +123,14 @@ final class SchedulerImpl {
 	 * @author shanguoming 2012-9-24 下午3:59:48
 	 * @param schedulingPattern
 	 *            '秒 分 时 日 月 周'
-	 * @param task
+	 * @param job
 	 *            任务对象
 	 * @return
 	 * @throws InvalidPatternException
 	 */
-	public String addSchedule(Job task) throws InvalidPatternException {
-		if (null != task) {
-			return addSchedule(new JobContextImpl(task));
+	public String addSchedule(Job job, String id, String pattern) throws InvalidPatternException {
+		if (null != job) {
+			return addSchedule(new JobContextImpl(job, pattern, id));
 		}
 		return null;
 	}
@@ -140,24 +140,11 @@ final class SchedulerImpl {
 	 * 
 	 * @author shanguoming 2012-12-6 下午3:38:37
 	 * @param schedulingPattern
-	 * @param task
+	 * @param jobContext
 	 * @return
 	 */
-	private String addSchedule(JobContextImpl task) {
-		return jobCollection.add(task);
-	}
-
-	/**
-	 * 更新调度任务
-	 * 
-	 * @author shanguoming 2014年12月22日 下午2:39:20
-	 * @param task
-	 * @modify: {原因} by shanguoming 2014年12月22日 下午2:39:20
-	 */
-	public void updateSchedule(Job task) throws InvalidPatternException {
-		if (null != task) {
-			jobCollection.update(new JobContextImpl(task));
-		}
+	private String addSchedule(JobContextImpl jobContext) {
+		return jobCollection.add(jobContext);
 	}
 
 	/**
@@ -188,14 +175,12 @@ final class SchedulerImpl {
 	 * 
 	 * @param id
 	 * @return 任务对象
-	 * @revised jiyi 2014-4-10
-	 *          com.github.geequery.scheduler.Task这个类受保护外界不可见，所以还是改为直接返回TaskEntity.
 	 */
-	public Job getTask(String id) {
-		JobContextImpl task = jobCollection.getTask(id);
-		if (task == null)
+	public Job getJob(String id) {
+		JobContextImpl job = jobCollection.getJobContext(id);
+		if (job == null)
 			return null;
-		return task.getTaskEntity();
+		return job.getJob();
 	}
 
 	/**
@@ -246,19 +231,19 @@ final class SchedulerImpl {
 		if (jobCollection.isEmpty() || !started) {
 			return;
 		}
-		for (JobContextImpl task : jobCollection.getTasks()) {
+		for (JobContextImpl job : jobCollection.getAllJobContext()) {
 			try {
-				SchedulingPattern pattern = task.getSchedulingPattern();
+				SchedulingPattern pattern = job.getSchedulingPattern();
 				if (null != pattern && pattern.match(getTimeZone(), referenceTimeInMillis)) {
-					if (task.isRuning()) {
-						log.info("任务{}:正在运行......", task.getId());
+					if (job.isRuning()) {
+						log.info("任务{}:正在运行......", job.getId());
 					} else {
-						log.info("任务{}:满足[{}]表达式要求，任务开始执行。。。。。。", task.getId(), pattern.toString());
-						spawnExecutor(task, referenceTimeInMillis);
+						log.info("任务{}:满足[{}]表达式要求，任务开始执行。。。。。。", job.getId(), pattern.toString());
+						spawnExecutor(job, referenceTimeInMillis);
 					}
 				}
 			} catch (Exception e) {
-				log.error("任务{}执行异常:", task.getId(), e);
+				log.error("任务{}执行异常:", job.getId(), e);
 			}
 		}
 	}
@@ -267,19 +252,19 @@ final class SchedulerImpl {
 	 * 执行给定的任务
 	 * 
 	 * @author shanguoming 2012-9-24 下午3:22:20
-	 * @param task
+	 * @param jobContext
 	 *            任务对象
 	 * @param 触发任务的时间点
 	 */
-	void spawnExecutor(JobContextImpl task, long referenceTimeInMillis) {
-		if (task == null)
+	private void spawnExecutor(JobContextImpl jobContext, long referenceTimeInMillis) {
+		if (jobContext == null)
 			return;
 		TimerEvent event = new TimerEvent(referenceTimeInMillis);
-		execute(task, event);
+		execute(jobContext, event);
 	}
 
-	private void execute(JobContextImpl task, TriggerEvent event) {
-		TaskExecutor e = new TaskExecutor(task, event);
+	private void execute(JobContext jobContext, TriggerEvent event) {
+		JobExecutor e = new JobExecutor(jobContext, event);
 		if (this.executor != null) {
 			executor.execute(e);
 		} else {
@@ -290,13 +275,19 @@ final class SchedulerImpl {
 
 	/**
 	 * 手动触发执行
-	 * @param taskId
+	 * 
+	 * @param id
 	 * @param event
 	 */
-	public void executor(String taskId, TriggerEvent event) {
-		JobContextImpl task = jobCollection.getTask(taskId);
-		if (null != task) {
-			execute(task,event);
+	public void execute(String id, TriggerEvent event) {
+		JobContext job = jobCollection.getJobContext(id);
+		if (null != job) {
+			JobExecutor e = new JobExecutor(job, event);
+			if (this.executor != null) {
+				executor.execute(e);
+			} else {
+				e.run();
+			}
 		}
 	}
 

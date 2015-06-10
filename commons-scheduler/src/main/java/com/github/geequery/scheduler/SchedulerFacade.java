@@ -9,50 +9,59 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 任务调度器门面，建议全局唯一
+ * 
  * @author jiyi
  *
  */
 public class SchedulerFacade {
 	private static final Logger log = LoggerFactory.getLogger("hv-scheduler.SchedulerFactory");
-	
+
 	/**
 	 * 私有任务调度器
 	 */
 	private final SchedulerImpl scheduler = new SchedulerImpl();
-	
+
 	/**
 	 * 设置任务执行的线程池，尽量在构造时传入
-	 * @param executor ExecuteService 线程池
+	 * 
+	 * @param executor
+	 *            ExecuteService 线程池
 	 */
 	public void setExecutor(ExecutorService executor) {
 		scheduler.setExecutor(executor);
 	}
-	
+
 	/**
 	 * 为一个任务重设调度计划
-	 * @param jobId 任务ID
-	 * @param schedulingPattern 新的任务计划Pattern
-	 * @throws NoSuchElementException 指定的任务不存在
+	 * 
+	 * @param jobId
+	 *            任务ID
+	 * @param schedulingPattern
+	 *            新的任务计划Pattern
+	 * @throws NoSuchElementException
+	 *             指定的任务不存在
 	 */
-	public void reschedule(String jobId, String schedulingPattern) throws NoSuchElementException{
+	public void reschedule(String jobId, String schedulingPattern) throws NoSuchElementException {
 		scheduler.reschedule(jobId, schedulingPattern);
 		log.info("重设任务[{}]的调度模式为[{}]", jobId, schedulingPattern);
 	}
-	
+
 	/**
-	 * 立刻指定指定ID的任务。
-	 * 如果任务正在运行，将被放入任务队列(要求event不为null)，等待当前执行完后被执行。任务队列上限5个。
+	 * 立刻指定指定ID的任务。 如果任务正在运行，将被放入任务队列(要求event不为null)，等待当前执行完后被执行。任务队列上限5个。
 	 * 
-	 * @param jobId 任务ID
-	 * @param event 触发任务的事件，定时触发是一种情况。一旦因为某些认为操作引发任务执行时，传入事件有助于在任务执行时判断当前场景。
+	 * @param jobId
+	 *            任务ID
+	 * @param event
+	 *            触发任务的事件，定时触发是一种情况。一旦因为某些认为操作引发任务执行时，传入事件有助于在任务执行时判断当前场景。
 	 */
 	public void fireJob(String jobId, TriggerEvent event) {
-		scheduler.executor(jobId, event);
+		scheduler.execute(jobId, event);
 		log.info("非定时执行任务[{}]，任务事件为[{}]", jobId, event.getClass().getName());
 	}
-	
+
 	/**
 	 * 删除指定ID的任务
+	 * 
 	 * @param id
 	 */
 	public void deschedule(String id) {
@@ -61,31 +70,36 @@ public class SchedulerFacade {
 	}
 	
 	/**
-	 * 添加任务
-	 * @param task 任务对象
+	 * 
+	 * @param job
+	 * @param pattern
+	 * @return
+	 * @throws InvalidPatternException
 	 */
-	public void addTask(Job... tasks) throws InvalidPatternException {
-		if (tasks != null && tasks.length > 0) {
-			for (Job taskEntity : tasks) {
-				scheduler.addSchedule(taskEntity);
-			}
-		}
+	public String addJob(Job job, String pattern) throws InvalidPatternException {
+		return scheduler.addSchedule(job, pattern, null);
 	}
+	
+	
 	
 	/**
-	 * 更新任务
-	 * @param tasks 将相同ID的任务替换为新的Job实例。相应的，任务调度计划也被更新。
+	 * 添加任务
+	 * @param job  任务
+	 * @param pattern 定时安排
+	 * @param id   任务ID，可以为null
+	 * @return
+	 * @throws InvalidPatternException
 	 */
-	public void updateTask(Job... tasks) {
-		if (tasks != null && tasks.length > 0) {
-			for (Job taskEntity : tasks) {
-				scheduler.updateSchedule(taskEntity);
-			}
-		}
+	public String addJob(Job job, String pattern, String id) throws InvalidPatternException {
+		if (job == null)
+			return null;
+		return scheduler.addSchedule(job, pattern, id);
+
 	}
-	
+
 	/**
 	 * 启动任务调度
+	 * 
 	 * @return true表示启动成功。如果已经启动了返回false
 	 */
 	public boolean start() {
@@ -97,9 +111,10 @@ public class SchedulerFacade {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 重启任务调度器
+	 * 
 	 * @return 是否启动成功
 	 */
 	public void restart() {
@@ -107,9 +122,10 @@ public class SchedulerFacade {
 		stop();
 		start();
 	}
-	
+
 	/**
 	 * 停止任务调度器
+	 * 
 	 * @return 是否停止任务成功(成功：true or 失败：false)
 	 */
 	public boolean stop() {
@@ -128,22 +144,25 @@ public class SchedulerFacade {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 获取调度器任务列表当前的所有上下文（其中包括Job）
+	 * 
 	 * @return Job
-	 * @see JobContext 
+	 * @see JobContext
 	 */
 	public List<JobContext> getAllJobs() {
 		return scheduler.getAllJobs();
 	}
-	
+
 	/**
 	 * 获取调度器任务的执行对象
-	 * @param id 任务ID
+	 * 
+	 * @param id
+	 *            任务ID
 	 * @return
 	 */
 	public Job getJob(String id) {
-		return scheduler.getTask(id);
+		return scheduler.getJob(id);
 	}
 }
