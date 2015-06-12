@@ -23,7 +23,7 @@ class TimerDaemon extends Thread {
 	
 	public TimerDaemon(SchedulerImpl scheduler) {
 		this.scheduler = scheduler;
-		String name = "hv-scheduler-" + scheduler.getGuid();
+		String name = scheduler.toString();
 		setName(name);
 	}
 	

@@ -2,7 +2,6 @@ package com.github.geequery.scheduler;
 
 import java.util.List;
 import java.util.TimeZone;
-import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,10 +19,6 @@ import org.slf4j.LoggerFactory;
 final class SchedulerImpl {
 
 	private static final Logger log = LoggerFactory.getLogger("hv-scheduler.Scheduler");
-	/**
-	 * 任务的唯一编码
-	 */
-	private String guid = UUID.randomUUID().toString();
 	/**
 	 * 世界时区
 	 */
@@ -77,16 +72,6 @@ final class SchedulerImpl {
 	}
 
 	/**
-	 * 获取当前任务的guid编码
-	 * 
-	 * @author shanguoming 2012-9-21 上午11:31:37
-	 * @return guid编码
-	 */
-	public Object getGuid() {
-		return guid;
-	}
-
-	/**
 	 * 设置世界时区
 	 * 
 	 * @author shanguoming 2012-9-21 上午11:32:44
@@ -129,7 +114,7 @@ final class SchedulerImpl {
 	 * @return
 	 * @throws InvalidPatternException
 	 */
-	public String addSchedule(Job job, String id, String pattern) throws InvalidPatternException {
+	public String addSchedule(String id, Job job, String pattern) throws InvalidPatternException {
 		if (null != job) {
 			return addSchedule(new JobContextImpl(job, pattern, id));
 		}
@@ -170,18 +155,14 @@ final class SchedulerImpl {
 	public void deschedule(String id) {
 		jobCollection.remove(id);
 	}
-
+	
 	/**
-	 * 根据GUID，获取任务对象
-	 * 
+	 * 得到一个Job的上下文
 	 * @param id
-	 * @return 任务对象
+	 * @return
 	 */
-	public Job getJob(String id) {
-		JobContextImpl job = jobCollection.getJobContext(id);
-		if (job == null)
-			return null;
-		return job.getJob();
+	final JobContextImpl getJob(String id) {
+		return jobCollection.getJobContext(id);
 	}
 
 	/**
@@ -264,7 +245,7 @@ final class SchedulerImpl {
 		execute(jobContext, event);
 	}
 
-	private void execute(JobContext jobContext, TriggerEvent event) {
+	final void execute(JobContext jobContext, TriggerEvent event) {
 		JobExecutor e = new JobExecutor(jobContext, event);
 		if (this.executor != null) {
 			executor.execute(e);
@@ -274,22 +255,10 @@ final class SchedulerImpl {
 		}
 	}
 
-	/**
-	 * 手动触发执行
-	 * 
-	 * @param id
-	 * @param event
-	 */
-	public void execute(String id, TriggerEvent event) {
-		JobContext job = jobCollection.getJobContext(id);
-		if (null != job) {
-			JobExecutor e = new JobExecutor(job, event);
-			if (this.executor != null) {
-				executor.execute(e);
-			} else {
-				e.run();
-			}
-		}
+
+	@Override
+	public String toString() {
+		return "hv-scheduler-" + hashCode();
 	}
 
 	/**

@@ -55,8 +55,37 @@ public class SchedulerFacade {
 	 *            触发任务的事件，定时触发是一种情况。一旦因为某些认为操作引发任务执行时，传入事件有助于在任务执行时判断当前场景。
 	 */
 	public void fireJob(String jobId, TriggerEvent event) {
-		scheduler.execute(jobId, event);
-		log.info("非定时执行任务[{}]，任务事件为[{}]", jobId, event.getClass().getName());
+		JobContext context = scheduler.getJob(jobId);
+		log.info("非定时执行任务[{}]，任务事件为[{}]", jobId, event);
+		scheduler.execute(context, event);
+	}
+
+	/**
+	 * 立即触发指定的任务
+	 * @param job 任务
+	 * @param event 事件
+	 */
+	public void fireJob(Job job, TriggerEvent event) {
+		if (job == null)
+			return;
+		for (JobContext context : scheduler.getAllJobs()) {
+			if (context.getJob() == job) {
+				log.info("非定时执行任务[{}]，任务事件为[{}]", job, event);
+				scheduler.execute(context, event);
+				return;
+			}
+		}
+		throw new NoSuchElementException("Job not exist:" + job);
+	}
+
+	/**
+	 * 立即触发指定的任务
+	 * 
+	 * @param job
+	 *            任务对象
+	 */
+	public void fireJob(Job job) {
+		fireJob(job,new ApiCallEvent(new Throwable().getStackTrace()));
 	}
 
 	/**
@@ -68,7 +97,7 @@ public class SchedulerFacade {
 		scheduler.deschedule(id);
 		log.info("删除调度器内的任务[{}]", id);
 	}
-	
+
 	/**
 	 * 
 	 * @param job
@@ -77,23 +106,25 @@ public class SchedulerFacade {
 	 * @throws InvalidPatternException
 	 */
 	public String addJob(Job job, String pattern) throws InvalidPatternException {
-		return scheduler.addSchedule(job, pattern, null);
+		return scheduler.addSchedule(null, job, pattern);
 	}
-	
-	
-	
+
 	/**
 	 * 添加任务
-	 * @param job  任务
-	 * @param pattern 定时安排
-	 * @param id   任务ID，可以为null
+	 * 
+	 * @param job
+	 *            任务
+	 * @param pattern
+	 *            定时安排
+	 * @param id
+	 *            任务ID，可以为null
 	 * @return
 	 * @throws InvalidPatternException
 	 */
-	public String addJob(Job job, String pattern, String id) throws InvalidPatternException {
+	public String addJob(String id, Job job, String pattern) throws InvalidPatternException {
 		if (job == null)
 			return null;
-		return scheduler.addSchedule(job, pattern, id);
+		return scheduler.addSchedule(id, job, pattern);
 
 	}
 
@@ -156,13 +187,15 @@ public class SchedulerFacade {
 	}
 
 	/**
-	 * 获取调度器任务的执行对象
+	 * 获取调度器的执行对象
 	 * 
 	 * @param id
-	 *            任务ID
-	 * @return
+	 * @return 任务对象
 	 */
 	public Job getJob(String id) {
-		return scheduler.getJob(id);
+		JobContextImpl job = scheduler.getJob(id);
+		if (job == null)
+			return null;
+		return job.getJob();
 	}
 }

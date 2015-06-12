@@ -33,4 +33,10 @@ public final class TimerEvent implements TriggerEvent{
 	public RejectPolicy getRejectPolicy() {
 		return RejectPolicy.Discard;
 	}
+
+	@Override
+	public String toString() {
+		
+		return super.toString();
+	}
 }

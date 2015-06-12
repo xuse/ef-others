@@ -10,7 +10,7 @@ package com.github.geequery.scheduler;
  * @modify by user: {修改人} 2012-9-24
  * @modify by reason:{方法名}:{原因}
  */
-class InvalidPatternException extends RuntimeException {
+public class InvalidPatternException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
 	
