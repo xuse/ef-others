@@ -876,4 +876,9 @@ public class FtpIoSession implements IoSession {
 	public void updateThroughput(long currentTime, boolean force) {
 		wrappedSession.updateThroughput(currentTime, force);
 	}
+
+	@Override
+	public boolean isSecured() {
+		return false;
+	}
 }

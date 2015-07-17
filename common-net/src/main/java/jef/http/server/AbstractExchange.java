@@ -9,7 +9,8 @@ import jef.tools.JefConfiguration;
 import jef.tools.JefConfiguration.Item;
 import jef.tools.StringUtils;
 
-import org.easyframe.fastjson.JSON;
+import com.alibaba.fastjson.JSON;
+
 
 public abstract class AbstractExchange implements WebExchange {
 	private static boolean withJsonHeader = JefConfiguration.getBoolean(Item.HTTP_SEND_JSON_HEADER, true);

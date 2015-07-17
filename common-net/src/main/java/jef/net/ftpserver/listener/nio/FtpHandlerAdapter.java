@@ -25,6 +25,7 @@ import jef.net.ftpserver.impl.DefaultFtpRequest;
 import jef.net.ftpserver.impl.FtpHandler;
 import jef.net.ftpserver.impl.FtpIoSession;
 import jef.net.ftpserver.impl.FtpServerContext;
+
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
@@ -98,5 +99,10 @@ public class FtpHandlerAdapter implements IoHandler {
         this.ftpHandler = handler;
 
     }
+
+	@Override
+	public void inputClosed(IoSession session) throws Exception {
+		session.close(false);
+	}
 
 }

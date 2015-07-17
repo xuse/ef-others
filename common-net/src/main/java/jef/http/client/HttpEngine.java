@@ -52,9 +52,9 @@ import jef.tools.ArrayUtils;
 import jef.tools.Assert;
 import jef.tools.IOUtils;
 import jef.tools.JefConfiguration;
-import jef.tools.SortUtils;
 import jef.tools.StringUtils;
 import jef.tools.ThreadUtils;
+import jef.tools.algorithm.Sorts;
 import jef.tools.string.StringParser;
 import jef.ui.ConsoleShell;
 
@@ -963,7 +963,7 @@ public class HttpEngine {
 		} else if (text[0].equals("host")) {// 显示站点信息
 			LogUtil.show("==== Host Profile ====");
 			HostProfile[] c = HostManager.getAll().values().toArray(new HostProfile[] {});
-			SortUtils.sort(c, 1);
+			Sorts.sort(c, 1);
 			for (HostProfile host : c) {
 				LogUtil.show(host.toString());
 			}

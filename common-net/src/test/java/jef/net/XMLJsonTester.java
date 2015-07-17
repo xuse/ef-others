@@ -9,10 +9,11 @@ import jef.tools.XMLFastJsonParser;
 import jef.tools.XMLUtils;
 import jef.tools.string.RandomData;
 
-import org.easyframe.fastjson.JSONObject;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class XMLJsonTester extends org.junit.Assert{
 

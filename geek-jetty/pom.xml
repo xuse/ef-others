@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>org.easyframe</groupId>
 			<artifactId>common-net</artifactId>
-			<version>1.9.5.RELEASE</version>
+			<version>1.9.9.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
