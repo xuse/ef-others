@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jef.common.log.LogUtil;
-import jef.http.server.PostData.UploadFile;
+import jef.http.server.UploadFile;
 import jef.tools.Assert;
 import jef.tools.DateUtils;
 import jef.tools.IOUtils;
@@ -147,7 +147,7 @@ public class UploadFileManager {
 		DataOutputStream out=new DataOutputStream(header);
 		try{
 			out.writeByte(TYPE_UPLOADFILE);
-			out.writeUTF(file.getLocalPath());
+			out.writeUTF(file.getPartName());
 			out.writeLong(System.currentTimeMillis());//保存时间
 			IOUtils.saveAsFile(new File(folder,uuid), new ByteArrayInputStream(header.toByteArray()),IOUtils.getInputStream(file.getTmpFile()));	
 		}finally{

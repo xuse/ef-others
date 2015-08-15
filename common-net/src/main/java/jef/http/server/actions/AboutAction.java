@@ -17,7 +17,7 @@ package jef.http.server.actions;
 
 import jef.common.log.LogUtil;
 import jef.http.server.PostData;
-import jef.http.server.PostData.UploadFile;
+import jef.http.server.UploadFile;
 import jef.http.server.WebExchange;
 
 /**

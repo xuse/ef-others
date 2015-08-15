@@ -14,40 +14,5 @@ public interface PostData {
 
 	Map<String, String[]> getParameterMap();
 
-	public static class UploadFile {
-		File tmpFile;
-		String fileName;
-		String localPath;
-
-		public UploadFile(File file, String filePath, String fieldName) {
-			filePath = filePath.replace('\\', '/');
-			int n = filePath.lastIndexOf('/');
-			this.fileName = (n == -1) ? filePath : filePath.substring(n + 1);
-			this.localPath = filePath;
-			this.tmpFile = file;
-		}
-
-		/**
-		 * 文件名
-		 * 
-		 * @return
-		 */
-		public String getFileName() {
-			return fileName;
-		}
-
-		public File getTmpFile() {
-			return tmpFile;
-		}
-
-		/**
-		 * 本地的文件路径
-		 * 
-		 * @return
-		 */
-		public String getLocalPath() {
-			return localPath;
-		}
-	}
 
 }

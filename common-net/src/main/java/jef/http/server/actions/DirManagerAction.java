@@ -26,7 +26,7 @@ import jef.common.MimeTypes;
 import jef.common.log.LogUtil;
 import jef.http.UrlWrapper;
 import jef.http.server.PostData;
-import jef.http.server.PostData.UploadFile;
+import jef.http.server.UploadFile;
 import jef.http.server.WebExchange;
 import jef.tools.Assert;
 import jef.tools.DateUtils;
