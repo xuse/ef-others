@@ -32,7 +32,7 @@ import jef.inner.sun.net.TransferProtocolClient;
  * @author Jonathan Payne
  */
 
-public class FtpClient extends TransferProtocolClient {
+public abstract class AbstractFtpClientImp extends TransferProtocolClient {
 	public static final int FTP_PORT = 21;
 
 	static int FTP_SUCCESS = 1;
@@ -120,7 +120,7 @@ public class FtpClient extends TransferProtocolClient {
 	}
 
 	public static boolean matchNonProxyHosts(String host) {
-		synchronized (FtpClient.class) {
+		synchronized (AbstractFtpClientImp.class) {
 			String rawList = System.getProperty("ftp.nonProxyHosts");
 			if (rawList == null) {
 				nonProxyHostsPool = null;
@@ -773,7 +773,7 @@ public class FtpClient extends TransferProtocolClient {
 	 * @exception FtpProtocolException
 	 *                if the connection fails
 	 */
-	public FtpClient(String host) throws IOException {
+	public AbstractFtpClientImp(String host) throws IOException {
 		super();
 		openServer(host, FTP_PORT);
 	}
@@ -789,16 +789,16 @@ public class FtpClient extends TransferProtocolClient {
 	 * @exception FtpProtocolException
 	 *                if the connection fails
 	 */
-	public FtpClient(String host, int port) throws IOException {
+	public AbstractFtpClientImp(String host, int port) throws IOException {
 		super();
 		openServer(host, port);
 	}
 
 	/** Create an uninitialized FTP client. */
-	public FtpClient() {
+	public AbstractFtpClientImp() {
 	}
 
-	public FtpClient(Proxy p) {
+	public AbstractFtpClientImp(Proxy p) {
 		proxy = p;
 	}
 

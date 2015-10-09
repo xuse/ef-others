@@ -27,7 +27,7 @@ import jef.tools.JefConfiguration.Item;
  * @author Administrator
  *
  */
-final class FtpClient extends jef.inner.sun.net.ftp.FtpClient {
+final class FtpClient extends jef.inner.sun.net.ftp.AbstractFtpClientImp {
 	private boolean debug=JefConfiguration.getBoolean(Item.DB_DEBUG,false);
 	public String execute(String cmd) throws IOException {
 		super.issueCommandCheck(cmd);
