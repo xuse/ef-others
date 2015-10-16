@@ -6,32 +6,25 @@ package com.github.geequery.scheduler;
  * @author jiyi
  *
  */
-public class ApiCallEvent implements TriggerEvent {
-	/**
-	 * 当发生调用时的线程堆栈
-	 */
-	private StackTraceElement[] trace;
+public class ApiCallEvent<T> implements TriggerEvent {
 	/**
 	 * 调用时间
 	 */
 	private long triggerTime;
+	
+	/**
+	 * 任务对象
+	 */
+	private T data;
 
-	public ApiCallEvent(StackTraceElement[] trace) {
-		this.trace = trace;
+	public ApiCallEvent(T data) {
+		this.data=data;
 		this.triggerTime=System.currentTimeMillis();
 	}
 
 	@Override
 	public RejectPolicy getRejectPolicy() {
-		return RejectPolicy.Discard;
-	}
-
-	/**
-	 * 当发生调用时的线程堆栈
-	 * @return
-	 */
-	public StackTraceElement[] getTrace() {
-		return trace;
+		return RejectPolicy.QueuedOrDisacrd;
 	}
 
 	/**
@@ -44,9 +37,12 @@ public class ApiCallEvent implements TriggerEvent {
 
 	@Override
 	public String toString() {
-		return getClass().getName()+" from "+	trace[1];
+		return String.valueOf(data);
 	}
-	
+
+	public T getData() {
+		return data;
+	}
 	
 }
 
