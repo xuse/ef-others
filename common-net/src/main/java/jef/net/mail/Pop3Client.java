@@ -28,14 +28,15 @@ import java.util.Comparator;
 import java.util.List;
 
 import jef.common.log.LogUtil;
-import jef.jre5support.Headers;
 import jef.net.AuthenticationException;
+import jef.net.Headers;
 import jef.net.MessageClient;
 import jef.net.mail.Mail.MailId;
 import jef.net.mail.Mail.MailSummary;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.io.ReaderInputStream;
+
 
 /**
  * POP3简介： 在POP3协议中有三种状态，认可状态，处理状态，和更新状态。

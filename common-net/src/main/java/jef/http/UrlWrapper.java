@@ -15,7 +15,7 @@
  */
 package jef.http;
 
-import jef.jre5support.Headers;
+import jef.net.Headers;
 
 public interface UrlWrapper {
 	/**

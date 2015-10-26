@@ -16,7 +16,7 @@ import jef.http.UrlWrapper;
 import jef.http.client.DLHelper;
 import jef.http.server.AbstractExchange;
 import jef.http.server.PostData;
-import jef.jre5support.Headers;
+import jef.net.Headers;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 

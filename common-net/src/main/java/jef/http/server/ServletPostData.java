@@ -32,7 +32,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 
 import jef.http.client.DLHelper;
-import jef.jre5support.Headers;
+import jef.net.Headers;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.string.StringParser;

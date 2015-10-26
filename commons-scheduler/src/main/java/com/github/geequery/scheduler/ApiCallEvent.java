@@ -6,7 +6,7 @@ package com.github.geequery.scheduler;
  * @author jiyi
  *
  */
-public class ApiCallEvent<T> implements TriggerEvent {
+public class ApiCallEvent implements TriggerEvent {
 	/**
 	 * 调用时间
 	 */
@@ -15,9 +15,9 @@ public class ApiCallEvent<T> implements TriggerEvent {
 	/**
 	 * 任务对象
 	 */
-	private T data;
+	private Object data;
 
-	public ApiCallEvent(T data) {
+	public ApiCallEvent(Object data) {
 		this.data=data;
 		this.triggerTime=System.currentTimeMillis();
 	}
@@ -40,7 +40,23 @@ public class ApiCallEvent<T> implements TriggerEvent {
 		return String.valueOf(data);
 	}
 
-	public T getData() {
+	/**
+	 * 返回指定类型的结果，如果类型不匹配返回null.
+	 * @param type 需要的类型
+	 * @return null if type not match
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getAs(Class<T> type) {
+		if(type==null)return null;
+		if(data!=null && type.isAssignableFrom(data.getClass())) {
+			return (T)data;
+		}else {
+			return null;
+		}
+	}
+	
+	
+	public Object getData() {
 		return data;
 	}
 	
