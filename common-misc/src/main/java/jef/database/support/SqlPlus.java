@@ -33,27 +33,27 @@ import java.util.prefs.Preferences;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import jef.common.log.LogUtil;
 import jef.database.DbCfg;
 import jef.database.DbClient;
 import jef.database.DbClientBuilder;
 import jef.database.DbMetaData;
 import jef.database.IQueryableEntity;
-import jef.database.meta.Column;
-import jef.database.meta.Index;
-import jef.database.meta.TableInfo;
+import jef.database.meta.object.Column;
+import jef.database.meta.object.Index;
+import jef.database.meta.object.TableInfo;
 import jef.jre5support.script.JavaScriptUtil;
 import jef.tools.IOUtils;
 import jef.tools.JefConfiguration;
 import jef.tools.StringUtils;
+import jef.ui.Commands;
 import jef.ui.ConsoleConversation;
 import jef.ui.ConsoleShell;
-import jef.ui.WinExecutor;
 import jef.ui.console.AbstractConsoleShell;
 import jef.ui.console.DefaultBatchConsoleShell;
 import jef.ui.console.ShellResult;
-
-import org.apache.commons.lang.ArrayUtils;
 
 public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 	// private boolean debugMode =
@@ -81,9 +81,9 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 	}
 
 	public void start() throws IOException {
-		LogUtil.commonDebugAdapter = false;
+		LogUtil.useSlf4j = false;
 		if (db == null && StringUtils.isNotBlank(JefConfiguration.get(DbCfg.DB_NAME))) {
-			db = new DbClientBuilder(false).build();
+			db = new DbClientBuilder().build();
 			LogUtil.show("database connected.");
 		}
 
@@ -289,7 +289,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				List<Column> cs = meta.getColumns(tableName, true);
 				LogUtil.show("======= Table " + tableName + " has " + cs.size() + " columns. ========");
 				for (Column c : cs) {
-					LogUtil.show(StringUtils.rightPad(c.getColumnName(), 10) + "\t" + StringUtils.rightPad(c.getDataType(), 9) + "\t" + c.getColumnSize() + "\t" + (c.isNullAble() ? "null" : "not null") + "\t" + c.getRemarks());
+					LogUtil.show(StringUtils.rightPad(c.getColumnName(), 10) + "\t" + StringUtils.rightPad(c.getDataType(), 9) + "\t" + c.getColumnSize() + "\t" + (c.isNullable()? "null" : "not null") + "\t" + c.getRemarks());
 				}
 				LogUtil.show("======= Table " + tableName + " Primary key ========");
 				LogUtil.show(meta.getPrimaryKey(tableName));
@@ -443,7 +443,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				LogUtil.exception(e);
 			}
 			long last = file.lastModified();
-			if (WinExecutor.execute("notepad.exe " + file.getAbsolutePath()) == 0) {
+			if (Commands.execute("notepad.exe " + file.getAbsolutePath(),null) == 0) {
 				if (file.exists() && file.lastModified() != last) {
 					ShellResult result = executeFile(file);
 					if (result == ShellResult.TERMINATE)

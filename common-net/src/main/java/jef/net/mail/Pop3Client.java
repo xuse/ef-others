@@ -28,7 +28,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import jef.common.log.LogUtil;
-import jef.jre5support.Headers;
+import jef.inner.sun.Headers;
 import jef.net.AuthenticationException;
 import jef.net.MessageClient;
 import jef.net.mail.Mail.MailId;

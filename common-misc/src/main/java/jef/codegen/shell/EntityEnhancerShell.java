@@ -16,10 +16,12 @@
 package jef.codegen.shell;
 
 import java.io.File;
+import java.net.MalformedURLException;
 
 import javax.swing.JFileChooser;
 
 import jef.codegen.EntityEnhancer;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.ui.swing.PanelWrapper;
 
@@ -35,7 +37,11 @@ public class EntityEnhancerShell extends BaseModelGenerator {
 	protected void generate() {
 		File target = new File(pp.getTextValue("target"));
 		EntityEnhancer en=new EntityEnhancer();
-		en.setRoot(target);
+		try {
+			en.addRoot(target.toURI().toURL());
+		} catch (MalformedURLException e) {
+			throw Exceptions.asIllegalArgument(e);
+		}
 		en.enhance(pp.getTextValue("pkgNames").split(","));
 	}
 

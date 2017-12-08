@@ -2,7 +2,6 @@ package org.easyframe.enterprise.rmi;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -11,15 +10,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jef.accelerator.asm.ASMUtils;
 import jef.accelerator.asm.ClassReader;
 import jef.accelerator.asm.ClassVisitor;
 import jef.accelerator.asm.ClassWriter;
 import jef.accelerator.asm.MethodVisitor;
+import jef.accelerator.asm.Opcodes;
 import jef.common.annotation.InOut;
 import jef.common.annotation.Out;
 import jef.tools.reflect.UnsafeUtils;
-
-import org.easyframe.fastjson.util.ASMUtils;
 
 public class RMIUtils {
 	
@@ -51,7 +50,7 @@ public class RMIUtils {
 		try{
 			ClassReader cl=new ClassReader(intf.getName());
 			ClassWriter cw=new ClassWriter(0);
-			cl.accept(new ClassVisitor(cw) {
+			cl.accept(new ClassVisitor(Opcodes.ASM5,cw) {
 				@Override
 				public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 					super.visit(version, access, newName.replace('.', '/'), signature, superName, interfaces);

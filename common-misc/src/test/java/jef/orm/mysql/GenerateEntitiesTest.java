@@ -3,10 +3,6 @@ package jef.orm.mysql;
 import java.io.File;
 import java.sql.SQLException;
 
-import jef.database.DbClientBuilder;
-import jef.database.dialect.AbstractDialect;
-import junit.framework.TestSuite;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -14,6 +10,10 @@ import org.junit.Test;
 
 import com.github.geequery.codegen.EntityGenerator;
 import com.github.geequery.codegen.MetaProvider.DbClientProvider;
+
+import jef.database.DbClientBuilder;
+import jef.database.dialect.AbstractDialect;
+import junit.framework.TestSuite;
 
 /**
  * 从MySQL数据库生成entity测试类
@@ -33,8 +33,8 @@ public class GenerateEntitiesTest {
 	@Before
 	public void setUp() {
 		generator = new EntityGenerator();
-		generator.setProfile(AbstractDialect.getProfile("mysql"));
-		generator.setProvider(new DbClientProvider(new DbClientBuilder(false).build()));
+		generator.setProfile(AbstractDialect.getDialect("mysql"));
+		generator.setProvider(new DbClientProvider(new DbClientBuilder().build()));
 		generator.setSrcFolder(new File("src1"));
 		generator.setBasePackage("jef.generated.dataobject.mysql");
 	}

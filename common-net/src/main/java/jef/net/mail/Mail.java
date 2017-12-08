@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ import jef.http.client.support.HtmlPart;
 import jef.http.client.support.NormalPart;
 import jef.http.client.support.Part;
 import jef.http.server.MultipartStream;
-import jef.jre5support.Headers;
+import jef.inner.sun.Headers;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.io.CountInputStream;

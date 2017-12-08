@@ -16,7 +16,7 @@ import java.util.Map;
 import jef.http.server.MultipartStream;
 import jef.http.server.PostData;
 import jef.http.server.UploadFile;
-import jef.jre5support.Headers;
+import jef.inner.sun.Headers;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.string.StringParser;
