@@ -1,0 +1,123 @@
+#jyml 是更严格的解析器，
+#主要表现在，不支持跨行文本拼接。注释必须从新行开始
+#列表中的复杂元素不允许有标签。
+#上述设计使得容错性降低了（是好事），但是从兼容性来讲和Eclipse的编辑器不符。
+
+document:
+  rootElement:
+    persons:
+      - person: {name: '李四', age: 20, friends: [张三, 王五]}
+      -
+          name: '王五'
+          age: 44
+    rooms:
+        - 'room1'
+        - 'room2'
+        #jyml更严格，不允许在下面这行加标签
+        - 
+          name: 'Special Room'
+          size: '100x100'
+        - 'room3'
+    person: 'user1'
+    peoples: 
+      Chife: 张三
+      Worker: '李四'
+      Worker2: 王五
+      Worker: 赵六
+      Worker4:
+        - '朝霞'
+        - ~
+      Workerx:
+        - '朝霞'
+        - ~
+        - '张三'
+      Worker5: ~
+      Worker6: true 
+      datetime: 2001-12-14t21:59:43.10-05:00
+      date: 2017-01-01
+      date2: 2017-01-1
+       #这里由于没有严格按照 yyyy-MM-dd格式，实际被当作了字符串
+      complex: [张三,~,王五,趙六,{name: 劉備, from: 三國}]
+      #jyml很严格，对于简写语法要求在一行写完
+  specials:
+    s1: 内容\n字符串
+       #\n被转义为\\n
+    s2: '内容\n字符串'
+     #\n被转义为\\n，也就是说单引号和无引号在这里是等效的
+    s3: "内容\n字符串"
+     #\n未被转义，保持原样
+    str0: labor's day
+      #单个引号没有问题
+    str1: labor''s day
+      #两个引号，因此不该这样写
+    str2: labor"s day
+      #被转义为\" 
+    #str3: 'labor''s day'
+      #当使用单引号后，内部的单引号要写成两个单引号
+    str4: 'labor"s day'
+      #被转义为\" 
+    str5: "labor''s day"
+      #双引号的作用是原样输出
+    str6: "labor \"s day"
+      #双引号中出现双引号时必须要转义，否则不对。
+    str7: 这是一段       多行      的字符串       缩进要求是必须比key至少多一个空格（而又不带冒号）
+      #jyml 不支持多行字符串
+    str8: '如果是引号   那么对缩进 就没有严格的要求了'
+    #这里也必须在一行内写完
+    items:   [Mark McGwire, Tom Curry, Steve Thompson]
+    items2: [Mark McGwire, Tom Curry, Steve Thompson]
+    items3: {user: kim, age: 100}
+  lists:
+   -
+    - 测试
+    - 开发
+    - 部署
+   - [业务建模, 需求分析]
+    #和测试、开发、部署是平级的
+   - 运维
+#Yaml使用一定要小心注意空格和格式，一旦写错，会被容错为字符串，且无告警。
+#注意1：冒号不为行尾时，后面一定要加空格， 
+#注意2：-后面一定要加空格。-一定要从一行的开始写起不能跟在冒号后面
+#注意3：在编辑器中使用tab进行缩进，自己打空格可能因为少一个或多一个空格造成没对齐
+#注意4：作为简写格式[]{}时，逗号后面是否有空格无影响。
+  defaults: &defaults
+    #定义了一个公用值（是复杂对象），可以被引用。定义出现在节点的后方，可以不换行
+    #锚点定义在一个元素（标签或列表的后面，指向整个标签或列表的值）
+    adapter:  postgres
+    items:
+      - Steve
+      - &element Zhang
+      - &element2
+       #将后面的对象定义为公共值
+        firstName: Liu
+        lastName: Bei
+    list:
+      #&lists会出错，也就是说不能定义一个公用值是一个列表
+      - zhangsan
+      - lisi
+      - wangwu
+
+  host:   &hostname  localhost #定义了一个公共的值（简单对象）
+    
+  labels:
+    development:
+      database: myapp_development
+      test: *defaults
+        #因为被引用的是一个节点，所以产生一个引用$ref
+      host: *hostname
+        #引用一个简单值，就很好理解
+    test:
+      database: myapp_test
+      <<: *defaults
+          #<<符号表示合并，当引用的是一个节点的时候可以合并过来
+      
+    deploy:
+      database: my_database
+      user: 
+        - Administrator
+        - *element
+          #引用列表中的值
+        - *element2
+          #因为是引用节点，不用<<符号会产生引用
+        - <<: *element2 
+        

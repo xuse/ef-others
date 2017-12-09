@@ -1,0 +1,146 @@
+{
+	"document": {
+		"specials": {
+			"s3": "内容\n字符串",
+			"str0": "labor's day",
+			"items3": {
+				"user": "kim",
+				"age": 100
+			},
+			"items2": [
+				"Mark McGwire",
+				"Tom Curry",
+				"Steve Thompson"
+			],
+			"str7": "这是一段       多行      的字符串       缩进要求是必须比key至少多一个空格（而又不带冒号）",
+			"str8": "如果是引号   那么对缩进 就没有严格的要求了",
+			"str5": "labor''s day",
+			"str6": "labor \"s day",
+			"str4": "labor\"s day",
+			"str1": "labor''s day",
+			"str2": "labor\"s day",
+			"items": [
+				"Mark McGwire",
+				"Tom Curry",
+				"Steve Thompson"
+			],
+			"s1": "内容\\n字符串",
+			"s2": "内容\\n字符串"
+		},
+		"defaults": {
+			"adapter": "postgres",
+			"list": [
+				"zhangsan",
+				"lisi",
+				"wangwu"
+			],
+			"items": [
+				"Steve",
+				"Zhang",
+				{
+					"firstName": "Liu",
+					"lastName": "Bei"
+				}
+			]
+		},
+		"rootElement": {
+			"peoples": {
+				"date": "2017-01-01",
+				"Chife": "张三",
+				"datetime": "2001-12-14t21:59:43.10-05:00",
+				"Worker2": "王五",
+				"Worker4": [
+					"朝霞",
+					null
+				],
+				"complex": [
+					"张三",
+					null,
+					"王五",
+					"趙六",
+					{
+						"name": "劉備",
+						"from": "三國"
+					}
+				],
+				"Worker6": true,
+				"Worker": "赵六",
+				"Workerx": [
+					"朝霞",
+					null,
+					"张三"
+				],
+				"date2": "2017-01-1"
+			},
+			"persons": [
+				{
+					"person": {
+						"name": "李四",
+						"age": 20,
+						"friends": [
+							"张三",
+							"王五"
+						]
+					}
+				},
+				{
+					"name": "王五",
+					"age": 44
+				}
+			],
+			"rooms": [
+				"room1",
+				"room2",
+				{
+					"size": "100x100",
+					"name": "Special Room"
+				},
+				"room3"
+			],
+			"person": "user1"
+		},
+		"lists": [
+			[
+				"测试",
+				"开发",
+				"部署"
+			],
+			[
+				"业务建模",
+				"需求分析"
+			],
+			"运维"
+		],
+		"host": "localhost #定义了一个公共的值（简单对象）",
+		"labels": {
+			"development": {
+				"database": "myapp_development",
+				"test": {
+					"$ref": "$.document.defaults"
+				},
+				"host": "localhost #定义了一个公共的值（简单对象）"
+			},
+			"test": {
+				"<<": {
+					"$ref": "$.document.defaults"
+				},
+				"database": "myapp_test"
+			},
+			"deploy": {
+				"database": "my_database",
+				"user": [
+					"Administrator",
+					"Zhang",
+					{
+						"$ref": "$.document.defaults.items[2]"
+					},
+					{
+						"<<": {
+							"$ref": "$.document.defaults.items[2]"
+						}
+					}
+				]
+			}
+		}
+	}
+}
