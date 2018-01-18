@@ -15,6 +15,8 @@
  */
 package jef.http;
 
+import jef.inner.sun.Headers;
+
 
 public interface UrlWrapper {
 	/**
