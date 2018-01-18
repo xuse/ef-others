@@ -1,1 +1,1 @@
-jef��FtpClient����ʹ����sun JDK��ר��ʵ�֣�Ϊ�˼�������JDK, ���ⲿ�ִ����sun JDK�г�ȡ����ʹ�á�
+jef的FtpClient功能使用了sun JDK的专有实现，为了兼容所有JDK, 将这部分代码从sun JDK中抽取出来使用。

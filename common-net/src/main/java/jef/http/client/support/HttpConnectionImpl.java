@@ -110,7 +110,7 @@ public class HttpConnectionImpl extends HttpConnection {
 				connected = true;
 			}catch(SSLHandshakeException e){
 				installCert();
-				LogUtil.show("new cert was installed. please restart the JVM...");//目前新证书安装后要重新启动
+				LogUtil.show("new cert was installed. please restart the JVM...");//保险起见新证书安装建议重新启动，实际使用时发现不重启好像也可以。
 			} catch (ConnectException e) {
 				throw new IOException(e.getMessage() + ":" + con.getURL().getHost());
 			}

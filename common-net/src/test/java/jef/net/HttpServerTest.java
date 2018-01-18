@@ -2,7 +2,6 @@ package jef.net;
 
 import java.io.File;
 
-import jef.http.server.HttpServer;
 import jef.http.server.actions.AboutAction;
 import jef.http.server.actions.DirManagerAction;
 import jef.http.server.actions.PasswordPicAction;
@@ -17,7 +16,8 @@ import jef.http.server.jdk.HtttpServerJDK6Impl;
 public class HttpServerTest {
 	public static void main(String[] args) {
 		{
-			HttpServer server =new HtttpServerJDK6Impl();
+		    HtttpServerJDK6Impl server =new HtttpServerJDK6Impl();
+		    server.setPort(81);
 			server.addResourceContext("/c", new File("c:/"));
 			server.addAction("/about", new AboutAction());
 			server.addAction("/d", new DirManagerAction(new File("d:/")));
