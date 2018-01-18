@@ -33,7 +33,11 @@ import jef.common.MimeTypes;
 import jef.common.log.LogUtil;
 import jef.http.UrlWrapper;
 import jef.http.client.support.HttpConnection;
+<<<<<<< HEAD
 import jef.net.Headers;
+=======
+import jef.inner.sun.Headers;
+>>>>>>> 83fdddc646e6b87855bb33b18a749b3eda1ada60
 import jef.tools.ArrayUtils;
 import jef.tools.Assert;
 import jef.tools.ByteUtils;

@@ -10,17 +10,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+import com.sun.net.httpserver.HttpExchange;
+
 import jef.common.MimeTypes;
 import jef.common.log.LogUtil;
 import jef.http.UrlWrapper;
 import jef.http.client.DLHelper;
 import jef.http.server.AbstractExchange;
 import jef.http.server.PostData;
+<<<<<<< HEAD
 import jef.net.Headers;
+=======
+import jef.inner.sun.Headers;
+>>>>>>> 83fdddc646e6b87855bb33b18a749b3eda1ada60
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
-
-import com.sun.net.httpserver.HttpExchange;
 
 @SuppressWarnings("restriction")
 final class WebExchangeImpl extends AbstractExchange {

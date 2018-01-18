@@ -28,6 +28,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import jef.common.log.LogUtil;
+<<<<<<< HEAD
+=======
+import jef.inner.sun.Headers;
+>>>>>>> 83fdddc646e6b87855bb33b18a749b3eda1ada60
 import jef.net.AuthenticationException;
 import jef.net.Headers;
 import jef.net.MessageClient;

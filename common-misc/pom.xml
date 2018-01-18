@@ -4,7 +4,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.easyframe</groupId>
-	<version>1.9.7.RELEASE</version>
+	<version>1.12.0.RC1</version>
 	<artifactId>common-misc</artifactId>
 	<name>common-misc</name>
 	<url>http://maven.apache.org</url>
@@ -13,11 +13,6 @@
 		<springframework.version>4.1.4.RELEASE</springframework.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.im4java</groupId>
-			<artifactId>im4java</artifactId>
-			<version>1.4.0</version>
-		</dependency>
 		<dependency>
 			<groupId>org.easyframe</groupId>
 			<artifactId>orm-code-generator</artifactId>
@@ -43,12 +38,6 @@
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
 			<version>10.10.2.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>12.1.0.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

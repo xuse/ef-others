@@ -11,13 +11,14 @@ import jef.tools.unrar.RarFileHeader;
 import jef.tools.unrar.RarOpenMode;
 
 public class ZipUtilsEx extends ZipUtils {
-	static{
+	static {
 		try {
 			ZipUtils.class.getClassLoader().loadClass("jef.tools.unrar.RarArchive");
 		} catch (ClassNotFoundException e) {
 			LogUtil.exception(e);
 		}
 	}
+
 	/**
 	 * 压缩rar格式文件（暂不支持）
 	 * 
@@ -99,7 +100,8 @@ public class ZipUtilsEx extends ZipUtils {
 	 * @throws IOException
 	 * @return 无错完成处理返回true,否则返回false
 	 */
-	public static boolean unrar(File file, String despath, EntryProcessor cd, boolean breakAtFail, String... pwd) throws IOException {
+	public static boolean unrar(File file, String despath, EntryProcessor cd, boolean breakAtFail, String... pwd)
+			throws IOException {
 		boolean hasError = false;
 		RarArchive rar = new RarArchive(file);
 		if (pwd.length > 0)
@@ -174,7 +176,7 @@ public class ZipUtilsEx extends ZipUtils {
 	public static ArchiveSummary getArchiveSummary(File file, String pwd) throws IOException {
 		String fname = file.getName().toLowerCase();
 		if (fname.endsWith(".tar.gz")) {
-			return getTarGzSummary(file);		
+			return getTarGzSummary(file);
 		} else if (fname.endsWith("tar")) {
 			return getTarSummary(file);
 		} else if (fname.endsWith(".rar")) {
@@ -208,7 +210,7 @@ public class ZipUtilsEx extends ZipUtils {
 			} else if (fname.endsWith(".rar")) {
 				return unrar(file, dest, cd, pwd);
 			} else {// 一律按照zip格式解压
-				return unzip(file, dest, cd);
+				return unzip(file, dest, null, cd);
 			}
 		} catch (Exception e) {
 			LogUtil.exception(e);

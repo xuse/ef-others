@@ -25,6 +25,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jetty.security.ConstraintMapping;
+import org.eclipse.jetty.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.NetworkTrafficServerConnector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.security.Constraint;
+import org.eclipse.jetty.webapp.Configuration;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.webapp.WebXmlConfiguration;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
 import jef.common.Entry;
 import jef.common.log.LogUtil;
 import jef.http.server.WebServer;
@@ -32,24 +47,6 @@ import jef.http.server.actions.HttpAction;
 import jef.tools.Assert;
 import jef.tools.IOUtils;
 import jef.tools.XMLUtils;
-
-import org.eclipse.jetty.http.security.Constraint;
-import org.eclipse.jetty.http.security.Credential;
-import org.eclipse.jetty.security.ConstraintMapping;
-import org.eclipse.jetty.security.ConstraintSecurityHandler;
-import org.eclipse.jetty.security.MappedLoginService;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.UserIdentity;
-import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
-import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.webapp.Configuration;
-import org.eclipse.jetty.webapp.WebAppContext;
-import org.eclipse.jetty.webapp.WebXmlConfiguration;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 public class JettyServer implements WebServer {
 	Server server;
@@ -150,7 +147,7 @@ public class JettyServer implements WebServer {
 	          
 			if (useNIO) {
 				server = new Server();
-				server.setConnectors(new Connector[] { new SelectChannelConnector() {
+				server.setConnectors(new Connector[] { new NetworkTrafficServerConnector(server) {
 					{
 						setPort(port);
 					}
@@ -287,18 +284,18 @@ public class JettyServer implements WebServer {
 		cm.setConstraint(constraint);
 		cm.setPathSpec("/*");
 		sh.setConstraintMappings(new ConstraintMapping[] { cm });
-		MappedLoginService login = new MappedLoginService() {
-			protected UserIdentity loadUser(String s) {
-				return null;
-			}
-
-			protected void loadUsers() throws IOException {
-				for (String user : userlist.keySet()) {
-					putUser(user, Credential.getCredential(userlist.get(user)), new String[] { "admin" });
-				}
-			}
-		};
-		sh.setLoginService(login);
+//		MappedLoginService login = new MappedLoginService() {
+//			protected UserIdentity loadUser(String s) {
+//				return null;
+//			}
+//
+//			protected void loadUsers() throws IOException {
+//				for (String user : userlist.keySet()) {
+//					putUser(user, Credential.getCredential(userlist.get(user)), new String[] { "admin" });
+//				}
+//			}
+//		};
+//		sh.setLoginService(login);
 		main.setSecurityHandler(sh);
 	}
 
