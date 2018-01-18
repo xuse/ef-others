@@ -12,6 +12,7 @@
 		<module>common-net</module>
 		<module>common-misc</module>
 		<module>study</module>
+		<module>commons-scheduler</module>
   </modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
