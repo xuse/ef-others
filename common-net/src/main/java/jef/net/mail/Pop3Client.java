@@ -37,6 +37,7 @@ import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.io.ReaderInputStream;
 
+
 /**
  * POP3简介： 在POP3协议中有三种状态，认可状态，处理状态，和更新状态。
  * 当客户机与服务器建立联系时，一旦客户机提供了自己身份并成功确认，即由认可状态转入处理状态，

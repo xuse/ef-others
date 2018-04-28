@@ -116,7 +116,4 @@ public abstract class AbstractEditConversation<T> extends ConsoleConversation<St
 		prompt("Records: " +p.getPageLimit() +"/"+ p.getTotal()+ "   Page:" + p.getCurrentPage() + "/" + p.getTotalPage());
 		return hs;
 	}
-
-	
-
 }

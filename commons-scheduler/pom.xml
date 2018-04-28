@@ -4,7 +4,7 @@
 	<groupId>com.github.geequery.commons</groupId>
 	<artifactId>commons-scheduler</artifactId>
 	<name>commons-scheduler</name>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2.2</version>
 	<description>任务调度器</description>
 	<packaging>jar</packaging>
 	<properties>

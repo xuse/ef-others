@@ -17,6 +17,7 @@ package jef.http;
 
 import jef.inner.sun.Headers;
 
+
 public interface UrlWrapper {
 	/**
 	 * 协议部分

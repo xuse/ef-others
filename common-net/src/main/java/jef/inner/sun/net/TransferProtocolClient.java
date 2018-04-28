@@ -16,7 +16,7 @@ import java.util.Vector;
  *
  * @version 	%I%, %G%
  * @author 	Jonathan Payne
- * @see 	jef.inner.sun.net.ftp.FtpClient
+ * @see 	jef.inner.sun.net.ftp.FtpClientImp
  * @see		jef.inner.sun.net.nntp.NntpClient
  */
 
