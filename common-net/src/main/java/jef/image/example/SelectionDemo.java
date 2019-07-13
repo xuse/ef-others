@@ -31,7 +31,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.event.MouseInputAdapter;
 
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 
 /*
  * This displays an image. When the user drags within the image, this program
@@ -79,7 +79,7 @@ public class SelectionDemo {
 		try {
 			imgURL = new File(path).toURI().toURL();
 		} catch (MalformedURLException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);

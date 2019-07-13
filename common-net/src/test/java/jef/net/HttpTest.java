@@ -5,19 +5,19 @@ import static junit.framework.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import jef.common.log.LogUtil;
-import jef.http.client.ConnectOptions;
-import jef.http.client.HttpEngine;
-import jef.http.client.support.HttpException;
-import jef.http.client.support.Proxy;
-import jef.tools.XMLUtils;
-import jef.tools.rss.HtmlPage;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
+
+import jef.http.client.ConnectOptions;
+import jef.http.client.HttpEngine;
+import jef.http.client.support.HttpException;
+import jef.http.client.support.Proxy;
+import jef.tools.Exceptions;
+import jef.tools.XMLUtils;
+import jef.tools.rss.HtmlPage;
 
 public class HttpTest {
 	private static HttpEngine engine;
@@ -27,7 +27,7 @@ public class HttpTest {
 		try{
 			engine = new HttpEngine();
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 

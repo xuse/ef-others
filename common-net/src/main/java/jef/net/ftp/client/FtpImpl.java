@@ -38,9 +38,9 @@ import jef.net.ftp.client.listparsers.NetWareListParser;
 import jef.net.ftp.client.listparsers.UnixListParser;
 import jef.tools.ArrayUtils;
 import jef.tools.Assert;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
-
-import org.apache.commons.lang.StringUtils;
+import jef.tools.StringUtils;
 
 /**
  * FtpClient的实现。
@@ -131,7 +131,7 @@ public class FtpImpl extends AbstractFtpClient implements Ftp{
 			System.out.println("Login to \"" + ftpClient.pwd() + "\" directory");
 			return true;
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}	
 	}
@@ -260,13 +260,13 @@ public class FtpImpl extends AbstractFtpClient implements Ftp{
 				result = result + c;
 			}
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} finally {
 			try {
 				is.close();
 				os.close();
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		}
 		return result;
@@ -304,7 +304,7 @@ public class FtpImpl extends AbstractFtpClient implements Ftp{
 				list.add(filename);
 			}
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}finally{
 			IOUtils.closeQuietly(dis);
 		}
@@ -450,7 +450,7 @@ public class FtpImpl extends AbstractFtpClient implements Ftp{
 			ftpClient.binary();
 			return true;
 		} catch (IOException e1) {
-			LogUtil.exception(e1);
+			Exceptions.log(e1);
 			return false;
 		}
 	}

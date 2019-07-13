@@ -38,6 +38,7 @@ import jef.http.client.HostManager;
 import jef.http.client.HostProfile;
 import jef.http.client.HttpEngine;
 import jef.tools.Assert;
+import jef.tools.Exceptions;
 import jef.tools.JefConfiguration;
 import jef.tools.StringUtils;
 import jef.tools.ThreadUtils;
@@ -266,7 +267,7 @@ public class HttpConnectionImpl extends HttpConnection {
 			this.setRequestRangeAndConnect(curPos, endPos, session);
 		} catch (IOException e) {
 			connected = false;
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 		return connected;
 	}
@@ -367,7 +368,7 @@ public class HttpConnectionImpl extends HttpConnection {
 				in = null;
 			}
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 

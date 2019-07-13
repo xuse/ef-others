@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import jef.common.JefException;
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 
 /**
  * This class stores and encrypts NTLM user credentials. The default
@@ -115,14 +115,14 @@ public final class NtlmPasswordAuthentication implements Principal, Serializable
         try {
             uni = password.getBytes( SmbConstants.UNI_ENCODING );
         } catch( UnsupportedEncodingException uee ) {
-        	LogUtil.exception(uee);
+        	Exceptions.log(uee);
         }
         MD4 md4 = new MD4();
         md4.update( uni );
         try {
             md4.digest(p21, 0, 16);
         } catch (Exception ex) {
-        	LogUtil.exception(ex);
+        	Exceptions.log(ex);
         }
         E( p21, challenge, p24 );
         return p24;
@@ -155,7 +155,7 @@ public final class NtlmPasswordAuthentication implements Principal, Serializable
             System.arraycopy(clientChallenge, 0, response, 16, 8);
             return response;
         } catch (Exception ex) {
-        	LogUtil.exception(ex);
+        	Exceptions.log(ex);
             return null;
         }
     }
@@ -172,7 +172,7 @@ public final class NtlmPasswordAuthentication implements Principal, Serializable
             md5.update(clientChallenge, 0, 8);
             System.arraycopy(md5.digest(), 0, sessionHash, 0, 8);
         } catch (GeneralSecurityException gse) {
-        	LogUtil.exception(gse);
+        	Exceptions.log(gse);
             throw new RuntimeException("MD5", gse);
         }
 
@@ -484,7 +484,7 @@ public final class NtlmPasswordAuthentication implements Principal, Serializable
         try {
             getUserSessionKey(challenge, key, 0); 
         } catch (Exception ex) {
-        	LogUtil.exception(ex);
+        	Exceptions.log(ex);
         }
         return key; 
     }

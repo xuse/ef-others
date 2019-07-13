@@ -25,14 +25,13 @@ import java.net.Socket;
 
 import javax.crypto.SecretKey;
 
+import jef.tools.ArrayUtils;
 import jef.tools.IOUtils;
 import jef.tools.ThreadUtils;
 import jef.tools.security.EncrypterUtil;
 import jef.tools.security.EncrypterUtil.Transport;
 import jef.tools.security.IChannel;
 import jef.tools.security.KeyConsult;
-
-import org.apache.commons.lang.ArrayUtils;
 
 
 /**

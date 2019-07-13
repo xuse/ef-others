@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
+import jef.tools.ArrayUtils;
 
 /**
  * 将一些不常用的方法从StringUtils中移动到这里，目的是

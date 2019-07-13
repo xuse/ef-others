@@ -19,12 +19,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import jef.common.Entry;
 import jef.http.client.support.CommentEntry;
 import jef.http.client.support.Proxy;
-
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
+import jef.tools.StringUtils;
 
 /**
  * 站点简要表

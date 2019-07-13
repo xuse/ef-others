@@ -17,9 +17,9 @@ package jef.http.client.ntlm;
 
 import java.io.IOException;
 
-import jef.common.log.LogUtil;
 import jef.http.client.support.HttpException;
 import jef.net.AuthenticationException;
+import jef.tools.Exceptions;
 import jef.tools.support.JefBase64;
 
 
@@ -80,7 +80,7 @@ final class NTLM {
 			Type3Message type3=new Type3Message(type2,password,domain,user,host,0);
 	        return encode(type3.toByteArray());
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 	        return "Error";
 		}
     }

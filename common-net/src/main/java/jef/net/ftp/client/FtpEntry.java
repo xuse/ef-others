@@ -182,7 +182,7 @@ public class FtpEntry {
 		
 		buffer.append("\t");
 		buffer.append(size).append("\t");
-		buffer.append(DateUtils.formatDateTime(modifiedDate));
+		buffer.append(DateUtils.formatDateTime(modifiedDate).orElse(""));
 		return buffer.toString();
 	}
 }

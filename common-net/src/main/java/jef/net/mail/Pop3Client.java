@@ -22,17 +22,18 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import jef.common.log.LogUtil;
 import jef.inner.sun.Headers;
 import jef.net.AuthenticationException;
 import jef.net.MessageClient;
 import jef.net.mail.Mail.MailId;
 import jef.net.mail.Mail.MailSummary;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.io.ReaderInputStream;
@@ -96,7 +97,7 @@ public class Pop3Client extends MessageClient {
 				login();
 			}
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 
@@ -259,7 +260,7 @@ public class Pop3Client extends MessageClient {
 		if (file.exists()) {
 			file = IOUtils.escapeExistFile(file);
 		}
-		Writer w=IOUtils.getWriter(file, null);
+		Writer w=IOUtils.getWriter(file,(Charset)null);
 		String s=sockin.readLine();
 		w.write(s);
 		for(s=sockin.readLine();!".".equals(s);){
@@ -467,7 +468,7 @@ public class Pop3Client extends MessageClient {
 		try {
 			open();
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			throw new RuntimeException(e.getCause());
 		}
 	}

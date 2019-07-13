@@ -15,11 +15,10 @@
  */
 package jef.http.client.ui;
 
-import org.apache.commons.lang.StringUtils;
-
 import jef.common.wrapper.Paginator;
 import jef.http.client.CookieManager;
 import jef.http.client.CookieManager.Domain;
+import jef.tools.StringUtils;
 import jef.ui.ConsoleShell;
 
 public class CookieEditConversation extends AbstractEditConversation<Domain> {

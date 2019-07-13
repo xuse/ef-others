@@ -15,8 +15,7 @@
  */
 package jef.net.socket.message;
 
-import org.apache.commons.lang.ArrayUtils;
-
+import jef.tools.ArrayUtils;
 import jef.tools.ByteUtils;
 
 public class MessageHeader {

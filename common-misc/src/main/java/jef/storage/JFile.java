@@ -28,11 +28,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import jef.common.log.LogUtil;
 import jef.database.DataObject;
 import jef.database.annotation.EasyEntity;
 import jef.storage.common.Storage;
 import jef.storage.common.StorageConfigurations;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 
@@ -97,7 +97,7 @@ public class JFile extends DataObject{
 		try{
 			init(new FileInputStream(file),file.getName(),null,desc);	
 		}catch(IOException e){
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 	/**

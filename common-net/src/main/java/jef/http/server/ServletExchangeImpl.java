@@ -27,13 +27,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jef.common.MimeTypes;
-import jef.common.log.LogUtil;
 import jef.http.UrlWrapper;
 import jef.http.client.DLHelper;
 import jef.http.server.actions.ServletExchange;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
-import jef.tools.string.CharsetName;
+import jef.tools.io.Charsets;
 
 public class ServletExchangeImpl extends AbstractExchange implements ServletExchange {
 	private HttpServletRequest request;
@@ -73,7 +73,7 @@ public class ServletExchangeImpl extends AbstractExchange implements ServletExch
 			}
 			if (contentType.length() == 0)
 				return null;
-			contentType = CharsetName.getStdName(contentType);
+			contentType = Charsets.getStdName(contentType);
 			return contentType;
 		} else {
 			return null;
@@ -122,7 +122,7 @@ public class ServletExchangeImpl extends AbstractExchange implements ServletExch
 			try {
 				postdata = new ServletPostData(request, this, paramIgnorCase);
 			} catch (Exception e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 				throw new RuntimeException(e);
 			}
 		}
@@ -222,7 +222,7 @@ public class ServletExchangeImpl extends AbstractExchange implements ServletExch
 		try {
 			IOUtils.copy(stream, response.getOutputStream(), true);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} finally {
 			IOUtils.closeQuietly(stream);
 		}

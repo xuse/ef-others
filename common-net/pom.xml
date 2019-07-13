@@ -4,7 +4,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.easyframe</groupId>
-	<version>1.12.0.RC1</version>
+	<version>1.13.0-SNAPSHOT</version>
 	<artifactId>common-net</artifactId>
 	<name>common-net</name>
 	<properties>
@@ -14,7 +14,7 @@
 		<dependency>
 			<groupId>org.easyframe</groupId>
 			<artifactId>common-core</artifactId>
-			<version>${project.version}</version>
+			<version>1.13.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.mina</groupId>
@@ -145,9 +145,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-					<compilerVersion>1.6</compilerVersion>
+					<source>8</source>
+					<target>8</target>
+					<compilerVersion>7</compilerVersion>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

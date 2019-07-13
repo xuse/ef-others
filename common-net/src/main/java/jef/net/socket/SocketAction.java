@@ -25,6 +25,7 @@ import jef.net.socket.message.MessageBuilder;
 import jef.net.socket.message.RawMessage;
 import jef.net.socket.message.StringMessage;
 import jef.tools.Assert;
+import jef.tools.Exceptions;
 
 
 public abstract class SocketAction {
@@ -63,7 +64,7 @@ public abstract class SocketAction {
 		try {
 			exchange.setResponse(response);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			exchange.close();
 		}
 	}

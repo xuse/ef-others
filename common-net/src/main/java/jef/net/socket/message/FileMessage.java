@@ -21,9 +21,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import jef.tools.ArrayUtils;
 import jef.tools.IOUtils;
-
-import org.apache.commons.lang.ArrayUtils;
 
 public class FileMessage extends MultiPartMessage{
 	public byte getMessageType() {

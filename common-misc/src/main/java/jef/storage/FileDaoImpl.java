@@ -27,52 +27,50 @@ import jef.database.support.JefDbClientSupport;
 /**
  * 使用JEF实现的FileDao
  */
-public class FileDaoImpl implements FileDAO,JefDbClientSupport{
+public class FileDaoImpl implements FileDAO, JefDbClientSupport {
 	private DbClient client;
+
 	public void setClient(Session client) {
-		this.client = (DbClient)client;
+		this.client = (DbClient) client;
 	}
 
-	public void create(JFile file)  {
-		try {
-			client.insert(file);
-		} catch (SQLException e) {
-			throw new PersistenceException(e.getMessage()+" "+e.getSQLState(),e);
-		}
+	public void create(JFile file){
+		client.insert(file);
 	}
 
-	public JFile get(String fileID){
-		JFile query=new JFile();
+	public JFile get(String fileID) {
+		JFile query = new JFile();
 		query.getQuery().addCondition(JFile.Field.uuid, fileID);
 		List<JFile> result;
 		try {
 			result = client.select(query);
 		} catch (SQLException e) {
-			throw new PersistenceException(e.getMessage()+" "+e.getSQLState(),e);
+			throw new PersistenceException(e.getMessage() + " " + e.getSQLState(), e);
 		}
-		if(result.size()>0)return (JFile)result.get(0); 
+		if (result.size() > 0)
+			return (JFile) result.get(0);
 		return null;
 	}
 
 	public List<JFile> getFdoList(String appCode) {
-		JFile query=new JFile();
+		JFile query = new JFile();
 		query.getQuery().addCondition(JFile.Field.applicationCode, appCode);
 		List<JFile> result;
 		try {
 			result = client.select(query);
 			return result;
 		} catch (SQLException e) {
-			throw new PersistenceException(e.getMessage()+" "+e.getSQLState(),e);
+			throw new PersistenceException(e.getMessage() + " " + e.getSQLState(), e);
 		}
 	}
 
 	public int remove(String fileID) {
-		JFile query=new JFile();
+		JFile query = new JFile();
 		query.getQuery().addCondition(JFile.Field.uuid, fileID);
 		try {
 			return client.delete(query);
 		} catch (SQLException e) {
-			throw new PersistenceException(e.getMessage()+" "+e.getSQLState(),e);
+			throw new PersistenceException(e.getMessage() + " " + e.getSQLState(), e);
 		}
 	}
 

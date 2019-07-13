@@ -46,10 +46,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import jef.common.log.LogUtil;
+import jef.tools.ArrayUtils;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
-
-import org.apache.commons.lang.ArrayUtils;
 
 public class ImageProcessingTest {
 	@SuppressWarnings("deprecation")

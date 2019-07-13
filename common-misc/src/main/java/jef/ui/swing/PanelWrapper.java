@@ -33,11 +33,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import jef.common.Callback;
-import jef.common.log.LogUtil;
-import jef.tools.IOUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
-import org.apache.commons.lang.ObjectUtils;
+import jef.common.Callback;
+import jef.tools.Exceptions;
+import jef.tools.IOUtils;
 
 /**
  * Swing工具，用具包装一个Panel并在Panel上快速生成组件
@@ -192,7 +192,7 @@ public class PanelWrapper {
 				try {
 					if(callback!=null)callback.call(file);
 				} catch (Throwable e1) {
-					LogUtil.exception(e1);
+					Exceptions.log(e1);
 				}
 			}
 		});

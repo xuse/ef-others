@@ -27,9 +27,8 @@ import java.util.List;
 import jef.common.BigDataBuffer;
 import jef.net.socket.message.Message;
 import jef.net.socket.message.MessageHeader;
+import jef.tools.ArrayUtils;
 import jef.tools.IOUtils;
-
-import org.apache.commons.lang.ArrayUtils;
 
 /**
  * 描述一个连接的各种属性

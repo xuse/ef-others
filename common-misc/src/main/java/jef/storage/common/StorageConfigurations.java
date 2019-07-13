@@ -20,14 +20,14 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import jef.common.log.LogUtil;
-import jef.tools.ResourceUtils;
-import jef.tools.XMLUtils;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import jef.tools.Exceptions;
+import jef.tools.ResourceUtils;
+import jef.tools.XMLUtils;
 
 
 public final class StorageConfigurations {
@@ -57,9 +57,9 @@ public final class StorageConfigurations {
 				parseConfig(document);	
 			}
 		}catch(IOException e){
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (SAXException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 		StorageConfigurations.Applications.put(StorageConfigurations.DEFAULT_APPLICATION_NAME, getDefaultApp());// 加载系统内建的默认Application设置
 	}

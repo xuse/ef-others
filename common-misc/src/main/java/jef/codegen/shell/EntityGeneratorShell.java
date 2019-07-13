@@ -20,12 +20,12 @@ import java.sql.SQLException;
 
 import javax.swing.JFileChooser;
 
-import jef.common.log.LogUtil;
-import jef.database.DbClientBuilder;
-import jef.ui.swing.PanelWrapper;
-
 import com.github.geequery.codegen.EntityGenerator;
 import com.github.geequery.codegen.MetaProvider.DbClientProvider;
+
+import jef.database.DbClientBuilder;
+import jef.tools.Exceptions;
+import jef.ui.swing.PanelWrapper;
 
 public class EntityGeneratorShell extends BaseModelGenerator {
 	public EntityGeneratorShell() {
@@ -56,7 +56,7 @@ public class EntityGeneratorShell extends BaseModelGenerator {
 			g.setBasePackage(pkgName);
 			g.generateSchema();
 		} catch (SQLException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 

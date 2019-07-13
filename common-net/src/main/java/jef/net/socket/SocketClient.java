@@ -23,9 +23,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import jef.common.log.LogUtil;
 import jef.net.socket.message.Message;
 import jef.net.socket.message.MessageBuilder;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 
 public class SocketClient {
@@ -104,9 +104,9 @@ public class SocketClient {
 				socket = new Socket(remoteHost, remotePort);
 			}
 		} catch (UnknownHostException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 
@@ -121,7 +121,7 @@ public class SocketClient {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} finally {
 			socket = null;
 		}

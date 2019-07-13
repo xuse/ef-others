@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jef.common.MimeTypes;
-import jef.common.log.LogUtil;
 import jef.http.client.support.FilePart;
 import jef.http.client.support.NormalPart;
 import jef.http.client.support.Part;
 import jef.net.mail.SmtpClient.Address;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.support.JefBase64;
@@ -123,7 +123,7 @@ public class MailMessage {
 			sendMessage(writer);
 			writer.flush();
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 	

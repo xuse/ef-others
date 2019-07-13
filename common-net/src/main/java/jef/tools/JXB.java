@@ -26,18 +26,17 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import jef.common.IntList;
-import jef.common.log.LogUtil;
-import jef.tools.reflect.BeanUtils;
-import jef.tools.reflect.BeanWrapperImpl;
-import jef.tools.reflect.ClassEx;
-import jef.tools.reflect.Enums;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
+import jef.common.IntList;
+import jef.common.log.LogUtil;
+import jef.tools.reflect.BeanWrapperImpl;
+import jef.tools.reflect.ClassEx;
+import jef.tools.reflect.Enums;
 
 /**
  * JXB与JAXB类似，是JEF中为了实现Java对象和XML绑定所编写的工具
@@ -320,13 +319,13 @@ public class JXB {
 		if (value == null)
 			return;
 		// ?bean.getFieldType(fieldName):
-		Class<?> type = BeanUtils.toWrapperClass(bean.getPropertyRawType(fieldName));
+		Class<?> type = Primitives.toWrapperClass(bean.getPropertyRawType(fieldName));
 		Class<?> c = value.getClass();
 		Element element = null;
 		if (String.class == c) {
 			element = XMLUtils.addElement(current, fieldName, (String) value);
 		} else if (Date.class == c) {
-			element = XMLUtils.addElement(current, fieldName, DateUtils.formatDateTime((Date) value));
+			element = XMLUtils.addElement(current, fieldName, DateUtils.formatDateTime((Date) value).orElse(""));
 		} else if (Integer.class == c || Integer.TYPE == c) {
 			element = XMLUtils.addElement(current, fieldName, String.valueOf(value));
 		} else if (Boolean.class == c || Boolean.TYPE == c) {
@@ -376,7 +375,7 @@ public class JXB {
 				Date d = DateUtils.parseDateTime(value);
 				bean.setPropertyValue(fieldName, d);
 			} catch (ParseException ex) {
-				LogUtil.exception(ex);
+				Exceptions.log(ex);
 			}
 		} else if (c.getWrappered() == Integer.class || "int".equals(c.getName())) {
 			bean.setPropertyValue(fieldName, StringUtils.toInt(value, 0));
@@ -540,7 +539,7 @@ public class JXB {
 			XMLUtils.saveDocument(doc, file, "UTF-8");
 			return true;
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}
 	}

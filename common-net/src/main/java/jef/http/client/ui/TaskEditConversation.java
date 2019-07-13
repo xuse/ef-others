@@ -23,6 +23,7 @@ import jef.common.wrapper.Paginator;
 import jef.http.client.HttpEngine;
 import jef.http.client.HttpTask;
 import jef.http.client.support.Proxy;
+import jef.tools.Exceptions;
 import jef.tools.StringUtils;
 import jef.tools.reflect.BeanUtils;
 import jef.ui.ConsoleShell;
@@ -64,7 +65,7 @@ public class TaskEditConversation extends AbstractEditConversation<HttpTask>{
 			try {
 				BeanUtils.setFieldValue(obj, "url", new URL(tmp));
 			} catch (MalformedURLException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		}
 		//代理

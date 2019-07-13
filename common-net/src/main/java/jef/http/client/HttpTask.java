@@ -25,6 +25,8 @@ import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.xml.sax.SAXException;
+
 import jef.common.Entry;
 import jef.common.log.LogUtil;
 import jef.common.wrapper.Holder;
@@ -34,12 +36,11 @@ import jef.http.client.support.HttpConnection;
 import jef.http.client.support.PostMethod;
 import jef.tools.ArrayUtils;
 import jef.tools.Assert;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.ThreadUtils;
 import jef.tools.XMLUtils;
-
-import org.xml.sax.SAXException;
 
 public class HttpTask implements Runnable, Serializable{
 	private static final long serialVersionUID = 126148287461276024L;
@@ -139,14 +140,14 @@ public class HttpTask implements Runnable, Serializable{
 			}
 		} catch (IOException e) {
 			returnType = ReturnType.ERROR_MESSAGE;
-			returnObj = StringUtils.exceptionStack(e, "jef");
-			if(HttpEngine.DEBUG_MODE)LogUtil.exception(e);
+			returnObj = LogUtil.exceptionStack(e, "jef");
+			if(HttpEngine.DEBUG_MODE)Exceptions.log(e);
 			setState(TaskState.ERROR);
 		} catch (Throwable e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			returnType = ReturnType.ERROR_MESSAGE;
-			returnObj = StringUtils.exceptionStack(e, "jef");
-			if(HttpEngine.DEBUG_MODE)LogUtil.exception(e);
+			returnObj = LogUtil.exceptionStack(e, "jef");
+			if(HttpEngine.DEBUG_MODE)Exceptions.log(e);
 			setState(TaskState.ERROR);
 		}
 	}
@@ -434,7 +435,7 @@ public class HttpTask implements Runnable, Serializable{
 				this.setUrl(new URL(newurl));
 				return true;
 			} catch (MalformedURLException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 				return false;
 			}
 		}

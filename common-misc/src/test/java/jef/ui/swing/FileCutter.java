@@ -55,7 +55,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import jef.common.Callback;
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 
@@ -186,7 +186,7 @@ public class FileCutter extends JFrame{
 			} else
 				size = size * 1024 * 1024;
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			this.addInfo("you inputed " + "an illegal number for cutting");
 			return;
 		}
@@ -194,7 +194,7 @@ public class FileCutter extends JFrame{
 		try {// 打开的文件是否有效
 			openFile = new File(text1.getText());
 		} catch (Exception ee) {
-			LogUtil.exception(ee);
+			Exceptions.log(ee);
 			this.addInfo("creat file failed! ");
 			return;
 		}
@@ -258,7 +258,7 @@ public class FileCutter extends JFrame{
 				this.addInfo("Exception!! combine failed");
 			}
 		} catch (Exception ee) {
-			LogUtil.exception(ee);
+			Exceptions.log(ee);
 			this.addInfo("Exception! combining failed!");
 		}
 	}

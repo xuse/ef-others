@@ -44,7 +44,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 @SuppressWarnings("unused")
 public class ScreenSnap extends Frame implements MouseListener, MouseMotionListener, ActionListener {
 
@@ -117,7 +117,7 @@ public class ScreenSnap extends Frame implements MouseListener, MouseMotionListe
 		try {
 			robot = new Robot();
 		} catch (AWTException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 
 		// 截取全屏
@@ -347,7 +347,7 @@ public class ScreenSnap extends Frame implements MouseListener, MouseMotionListe
 				try {
 					ImageIO.write(sbi, "jpeg", new File(file, fileDialog.getFile() + ".jpg"));
 				} catch (IOException e1) {
-					LogUtil.exception(e1);
+					Exceptions.log(e1);
 				}
 			}
 

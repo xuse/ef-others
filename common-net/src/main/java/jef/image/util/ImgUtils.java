@@ -57,7 +57,7 @@
 //				encoder.encode(image);
 //			}
 //		} catch (Exception e) {
-//			LogUtil.exception(e);
+//			Exceptions.log(e);
 //		}
 //	}
 //
@@ -165,7 +165,7 @@
 //			out.close();
 //		} catch (Exception e) {
 //			System.out.println("createJpgByFont Failed!");
-//			LogUtil.exception(e);
+//			Exceptions.log(e);
 //		}
 //	}
 //
@@ -218,7 +218,7 @@
 //			out.close();
 //		} catch (Exception e) {
 //			System.out.println("createBigJPG Failed!");
-//			LogUtil.exception(e);
+//			Exceptions.log(e);
 //		}
 //	}
 //}

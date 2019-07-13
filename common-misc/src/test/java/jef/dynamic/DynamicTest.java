@@ -6,15 +6,15 @@ import java.lang.reflect.Modifier;
 
 import javax.management.ReflectionException;
 
+import com.github.geequery.codegen.ast.JavaMethod;
+import com.github.geequery.codegen.ast.JavaUnit;
+import com.google.common.base.Charsets;
+
 import jef.codegen.support.OverWrittenMode;
-import jef.common.log.LogUtil;
-import jef.dynamic.DefaultCompiler;
+import jef.tools.Exceptions;
 import jef.tools.ThreadUtils;
 import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.ClassLoaderUtil;
-
-import com.github.geequery.codegen.ast.JavaMethod;
-import com.github.geequery.codegen.ast.JavaUnit;
 
 public class DynamicTest {
 
@@ -26,7 +26,7 @@ public class DynamicTest {
 				try {
 					example();
 				} catch (Exception e) {
-					LogUtil.exception(e);
+					Exceptions.log(e);
 				}
 			}
 
@@ -56,14 +56,14 @@ public class DynamicTest {
 		method.addContent("System.out.println(name+\",\"+var);");
 		method.addContent("System.out.print(\"十年后是\"+(num+10)+\"岁。\");");
 
-		 File saved = java.saveToSrcFolder(src,"UTF-8",OverWrittenMode.AUTO);
-		 String className = java.getClassName();
-		 jef.dynamic.Compiler tool = prepareCompileTools(ClassLoaderUtil.getAppClassLoader());
-		 ClassEx r = tool.complieAndLoad(saved, className);
-		 r.invokeWithNewInstance("test","你好",12);
+		File saved = java.saveToSrcFolder(src, Charsets.UTF_8, OverWrittenMode.AUTO);
+		String className = java.getClassName();
+		jef.dynamic.Compiler tool = prepareCompileTools(ClassLoaderUtil.getAppClassLoader());
+		ClassEx r = tool.complieAndLoad(saved, className);
+		r.invokeWithNewInstance("test", "你好", 12);
 
 	}
-	
+
 	/**
 	 * 正常情况下只有JDK才有Tools.jar的编译工具包，默认是不加载到项目中的，这里通过动态加载功能，让程序具备动态编译Java文件的能力
 	 * 
@@ -73,7 +73,6 @@ public class DynamicTest {
 	public static jef.dynamic.Compiler prepareCompileTools(ClassLoader sysloader, String... name) throws ReflectionException {
 		return new DefaultCompiler(sysloader);
 	}
-
 
 	// @SuppressWarnings("unchecked")
 	public static void example2() throws Exception {
@@ -96,13 +95,13 @@ public class DynamicTest {
 
 		jef.dynamic.Compiler cc = prepareCompileTools(ClassLoaderUtil.getAppClassLoader(), "ant");
 
-		ClassEx c= cc.complieAndLoad(java.asSourceFile(), java.getClassName());
-//		for (ClassEx c : cs) {
-//			if (c.getSimpleName().equals("TestJavaMain")) {
-//				c.invokeWithNewInstance("main");
-//			}
-//		}
-//		cs = null;
+		ClassEx c = cc.complieAndLoad(java.asSourceFile(), java.getClassName());
+		// for (ClassEx c : cs) {
+		// if (c.getSimpleName().equals("TestJavaMain")) {
+		// c.invokeWithNewInstance("main");
+		// }
+		// }
+		// cs = null;
 
 		ThreadUtils.doSleep(1000);
 		JavaUnit java3 = new JavaUnit("pkg", "TestJavaMain");
@@ -110,11 +109,11 @@ public class DynamicTest {
 		java3.addContent("  TestJava t=new TestJava();");
 		java3.addContent("  t.test(\"重新载入后\",10);");
 		java3.addContent("}");
-//		ClassEx[] c1 = cc.complieAndLoad(java3, java);
-//		for (ClassEx c : c1) {
-//			if (c.getSimpleName().equals("TestJavaMain")) {
-//				c.invokeWithNewInstance("main");
-//			}
-//		}
+		// ClassEx[] c1 = cc.complieAndLoad(java3, java);
+		// for (ClassEx c : c1) {
+		// if (c.getSimpleName().equals("TestJavaMain")) {
+		// c.invokeWithNewInstance("main");
+		// }
+		// }
 	}
 }

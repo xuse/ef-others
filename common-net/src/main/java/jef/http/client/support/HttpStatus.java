@@ -17,7 +17,7 @@ package jef.http.client.support;
 
 import java.util.Arrays;
 
-import org.apache.commons.lang.ArrayUtils;
+import jef.tools.ArrayUtils;
 
 /**
  * HTTP状态

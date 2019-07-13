@@ -27,7 +27,6 @@ import jef.http.client.support.PostMethod;
 import jef.http.client.support.ThreadState;
 import jef.tools.Assert;
 import jef.tools.IOUtils;
-import jef.tools.StringUtils;
 import jef.tools.ThreadUtils;
 
 class DLThread extends Thread implements Serializable {
@@ -102,7 +101,7 @@ class DLThread extends Thread implements Serializable {
 			threadState = ThreadState.DONE;
 		} catch (Throwable ex) {
 			session.addLog(ex.getMessage());
-			this.errorMessage = StringUtils.exceptionStack(ex, "jef");
+			this.errorMessage = LogUtil.exceptionStack(ex, "jef");
 			threadState = ThreadState.ERROR;
 		} finally {
 			IOUtils.closeQuietly(con);
@@ -207,7 +206,7 @@ class DLThread extends Thread implements Serializable {
 		if (endPos > 0 && con.supportBreakPoint()) {// 从上次下载到的地方继续
 			boolean isPost = (session.getConnectOptions().getMethod() instanceof PostMethod);
 			String msg = "Disconnect, retry:" + ((isPost) ? session.getConnectOptions().getReference(session.getUrl()) : session.getUrl().toString());
-			if(e!=null)msg+="\n"+StringUtils.exceptionSummary(e);
+			if(e!=null)msg+="\n"+LogUtil.exceptionSummary(e);
 			msg = msg + "\n"+getPosDebugString();
 			session.addLog(msg);
 			return con.reconnect(curPos, endPos,session);

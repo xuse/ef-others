@@ -35,6 +35,7 @@ import java.util.concurrent.Executors;
 import jef.common.log.FileLogger;
 import jef.common.log.LogUtil;
 import jef.tools.DateUtils;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.JefConfiguration;
 import jef.tools.ThreadUtils;
@@ -143,7 +144,7 @@ public class SocketServer {
 						}
 						//System.out.println("debug: now let's do next select.("+size+")");
 					} catch (IOException e) {
-						LogUtil.exception(e);
+						Exceptions.log(e);
 					}
 				}
 				// 提示线程池关闭
@@ -156,7 +157,7 @@ public class SocketServer {
 				try {
 					selector.close();
 				} catch (IOException e) {
-					LogUtil.exception(e);
+					Exceptions.log(e);
 				}
 			}
 
@@ -200,7 +201,7 @@ public class SocketServer {
 				} catch (Exception e) {//如果一个socket出现异常则丢弃这个连接。
 					SocketExchange att=(SocketExchange)key.attachment();
 					fg.log((att==null)?"":att.getUser()+e.getMessage());
-					LogUtil.exception(e);
+					Exceptions.log(e);
 					if(att!=null)att.close();
 					key.cancel();
 				}
@@ -252,7 +253,7 @@ public class SocketServer {
 			socket.close();
 		} catch (IOException e) {
 			LogUtil.show("Can't connect to localhost:"+port);
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 	

@@ -22,10 +22,10 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.BitSet;
 
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 import jef.tools.StringUtils;
+import jef.tools.io.Charsets;
 import jef.tools.io.WriterOutputStream;
-import jef.tools.string.CharsetName;
 import jef.tools.string.JefStringReader;
 import jef.tools.support.JefBase64;
 
@@ -46,7 +46,7 @@ public class MIMEUtil {
 				if (c == (int)'=' && reader.nextChar()==(int)'?') { //处理rfc2047即(=?b?str?=)格式的编码
 					reader.read();
 					String charSet=new String(reader.readUntilCharIs(WEN_HAO));
-					charSet=CharsetName.getStdName(charSet);
+					charSet=Charsets.getStdName(charSet);
 					reader.omit(1);
 					char way=(char)reader.read();
 					reader.omit(1);
@@ -63,7 +63,7 @@ public class MIMEUtil {
 				}
 			}
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 		reader.close();
 		return sb.toString();

@@ -10,17 +10,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+import com.sun.net.httpserver.HttpExchange;
+
 import jef.common.MimeTypes;
-import jef.common.log.LogUtil;
 import jef.http.UrlWrapper;
 import jef.http.client.DLHelper;
 import jef.http.server.AbstractExchange;
 import jef.http.server.PostData;
 import jef.inner.sun.Headers;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
-
-import com.sun.net.httpserver.HttpExchange;
 
 @SuppressWarnings("restriction")
 final class WebExchangeImpl extends AbstractExchange {
@@ -149,7 +149,7 @@ final class WebExchangeImpl extends AbstractExchange {
 		try {
 			IOUtils.copy(stream, raw.getResponseBody(), true);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} finally {
 			IOUtils.closeQuietly(stream);
 		}

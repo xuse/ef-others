@@ -29,7 +29,8 @@ import jef.http.server.PostData;
 import jef.http.server.UploadFile;
 import jef.http.server.WebExchange;
 import jef.tools.Assert;
-import jef.tools.DateUtils;
+import jef.tools.DateFormats;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.ThreadUtils;
@@ -192,7 +193,7 @@ public class DirManagerAction implements HttpAction {
 		exchange.print("&nbsp;</a></td><td>");
 		exchange.print(sub.isDirectory() ? "&lt;DIR&gt;&nbsp;" : StringUtils.formatSize(sub.length()));
 		exchange.print("</td><td>");
-		exchange.print(DateUtils.format(sub.lastModified()));
+		exchange.print(DateFormats.DATE_CS.format(sub.lastModified()));
 		exchange.print("</td><td align=right>");
 		exchange.print("<a href='javascript:rename(\"" + sub.getName() + "\")'>Rename</a>&nbsp;");
 		exchange.print("<a href='javascript:del(\"" + StringUtils.urlEncode(sub.getName()) + "\");'>Delete</a>");
@@ -237,9 +238,9 @@ public class DirManagerAction implements HttpAction {
 			exchange.print("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><link href='__java.css!res' rel=stylesheet type=text/css /></head><body>" + "<form action='?save=1' method=post acceptcharset='UTF-8'>Edit: " + dir.getPath()
 					+ "<br><textarea name=java id=java style='width:80%; height:500px'>");
 			try {
-				exchange.print(IOUtils.asString(IOUtils.getReader(dir, null)));
+				exchange.print(IOUtils.asString(IOUtils.getReader(dir,(String) null)));
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 			String url = "\"" + StringUtils.urlEncode(dir.getName()) + suffix + "\"";
 			exchange.print("</textarea><br><input type=submit value=save><input type=button value=return onclick='window.location=" + url + ";'></form>");
@@ -248,9 +249,9 @@ public class DirManagerAction implements HttpAction {
 			exchange.print("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><link href='__java.css!res' rel=stylesheet type=text/css /></head><body><a href='?edit=1'>Edit</a>" + "&nbsp;<a href='./" + suffix
 					+ "'>Return</a><textarea id=java style='height:1px;visibility:hidden'>");
 			try {
-				exchange.print(IOUtils.asString(IOUtils.getReader(dir, null)));
+				exchange.print(IOUtils.asString(IOUtils.getReader(dir, (String)null)));
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 			exchange.print("</textarea>" + "<script type=text/javascript src='__java.js!res'></script>" + "</body></html>");
 		}

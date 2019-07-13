@@ -23,8 +23,8 @@ import java.net.URL;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
-import jef.common.log.LogUtil;
 import jef.database.DbUtils;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.ui.swing.PanelWrapper;
 import jef.ui.swing.Swing;
@@ -54,7 +54,7 @@ public class PasswordGeneratorShell extends BaseModelGenerator {
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
 				Swing.msgbox("the encrypted password is copyed to clip board.", 0);
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		}
 	}

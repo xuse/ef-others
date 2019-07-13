@@ -47,7 +47,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 
 /**
 * @author root
@@ -65,13 +65,13 @@ public class JExplorer {
     	try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (InstantiationException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (IllegalAccessException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (UnsupportedLookAndFeelException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
         // JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame();

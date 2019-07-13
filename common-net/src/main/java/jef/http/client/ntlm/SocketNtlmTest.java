@@ -24,7 +24,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 
 public class SocketNtlmTest {
 
@@ -125,7 +125,7 @@ public class SocketNtlmTest {
 			sock = null;
 			// return;
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 

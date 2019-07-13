@@ -26,7 +26,7 @@ import java.net.UnknownHostException;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 
 /**
  * This class uses a static {@link java.util.Properties} to act as a cental
@@ -69,13 +69,13 @@ public class Config {
 			if (in != null)
 				in.close();
 		} catch (IOException ioe) {
-			LogUtil.exception(ioe);
+			Exceptions.log(ioe);
 		}
 
 		try {
 			"".getBytes(DEFAULT_OEM_ENCODING);
 		} catch (UnsupportedEncodingException uee) {
-			LogUtil.exception(uee);
+			Exceptions.log(uee);
 			DEFAULT_OEM_ENCODING = "US-ASCII";
 		}
 	}
@@ -133,7 +133,7 @@ public class Config {
 		try {
 			Config.prp.putAll(System.getProperties());
 		} catch (SecurityException se) {
-			LogUtil.exception(se);
+			Exceptions.log(se);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class Config {
 		try {
 			prp.putAll(System.getProperties());
 		} catch (SecurityException se) {
-			LogUtil.exception(se);
+			Exceptions.log(se);
 		}
 	}
 
@@ -211,7 +211,7 @@ public class Config {
 			try {
 				def = Integer.parseInt(s);
 			} catch (NumberFormatException nfe) {
-				LogUtil.exception(nfe);
+				Exceptions.log(nfe);
 			}
 		}
 		return def;
@@ -229,7 +229,7 @@ public class Config {
 			try {
 				result = Integer.parseInt(s);
 			} catch (NumberFormatException nfe) {
-				LogUtil.exception(nfe);
+				Exceptions.log(nfe);
 			}
 		}
 		return result;
@@ -247,7 +247,7 @@ public class Config {
 			try {
 				def = Long.parseLong(s);
 			} catch (NumberFormatException nfe) {
-				LogUtil.exception(nfe);
+				Exceptions.log(nfe);
 			}
 		}
 		return def;
@@ -264,7 +264,7 @@ public class Config {
 			try {
 				def = InetAddress.getByName(addr);
 			} catch (UnknownHostException uhe) {
-				LogUtil.exception(uhe);
+				Exceptions.log(uhe);
 			}
 		}
 		return def;
@@ -277,7 +277,7 @@ public class Config {
 			try {
 				return InetAddress.getByName(addr);
 			} catch (UnknownHostException uhe) {
-				LogUtil.exception(uhe);
+				Exceptions.log(uhe);
 			}
 		}
 
@@ -314,7 +314,7 @@ public class Config {
 				try {
 					arr[i] = InetAddress.getByName(addr);
 				} catch (UnknownHostException uhe) {
-					LogUtil.exception(uhe);
+					Exceptions.log(uhe);
 					return def;
 				}
 			}

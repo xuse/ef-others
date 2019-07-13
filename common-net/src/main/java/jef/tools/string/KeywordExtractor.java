@@ -18,7 +18,7 @@ package jef.tools.string;
 import java.util.ArrayList;
 import java.util.List;
 
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 import jef.tools.StringUtils;
 
 /**
@@ -181,7 +181,7 @@ public class KeywordExtractor{
 				return m;
 			}
 		}catch(Exception e){
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return s.length();
 		}
 	}

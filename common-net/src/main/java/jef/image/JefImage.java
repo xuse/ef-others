@@ -60,15 +60,15 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 
-import jef.common.Entry;
-import jef.common.RGB;
-import jef.common.log.LogUtil;
-import jef.tools.IOUtils;
-
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 
 import com.sun.imageio.plugins.jpeg.JPEGImageWriter;
+
+import jef.common.Entry;
+import jef.common.RGB;
+import jef.tools.Exceptions;
+import jef.tools.IOUtils;
 
 public class JefImage {
 	public static final double ROTATE_45 = Math.PI / 4;
@@ -208,7 +208,7 @@ public class JefImage {
 			saveAs(localFile, type);
 			return localFile;
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return null;
 		}
 	}
@@ -240,7 +240,7 @@ public class JefImage {
 			String typeName = (saveType == null) ? IOUtils.getExtName(file.getName()) : saveType.name();
 			return saveAs(out, typeName, 80);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}
 	}
@@ -256,7 +256,7 @@ public class JefImage {
 			FileImageOutputStream out = new FileImageOutputStream(file);
 			return saveAs(out, ImageType.JPEG.name(), quality);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}
 
@@ -266,7 +266,7 @@ public class JefImage {
 		 * JPEGCodec.createJPEGEncoder(out); JPEGEncodeParam param =
 		 * encoder.getDefaultJPEGEncodeParam(img); param.setQuality(quality,
 		 * true); encoder.encode(img); // 近JPEG编码 out.close(); return true;
-		 * }catch(IOException e){ LogUtil.exception(e); return false; }
+		 * }catch(IOException e){ Exceptions.log(e); return false; }
 		 */
 	}
 
@@ -551,9 +551,9 @@ public class JefImage {
 				Font font = Font.createFont(Font.TRUETYPE_FONT, format.getFontFile());
 				g2d.setFont(font.deriveFont((format.isBold() ? Font.BOLD : 0) + (format.isItalic() ? Font.ITALIC : 0), format.getFontSize()));
 			} catch (FontFormatException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		} else {
 			g2d.setFont(new Font(format.getFontName(), (format.isBold() ? Font.BOLD : 0) + (format.isItalic() ? Font.ITALIC : 0), format.getFontSize()));
@@ -734,7 +734,7 @@ public class JefImage {
 		for (char c : passwordStr.toCharArray()) {
 			Color cc = colors[r.nextInt(colors.length)];
 			// System.out.println(cc);
-			TextFormat format = JefImage.getTextFormat("Arial", 14, cc, true, RandomUtils.nextBoolean());
+			TextFormat format = JefImage.getTextFormat("Arial", 14, cc, true, RandomUtils.nextInt(0, 2)==1);
 			img.addText(String.valueOf(c), format, offset, yoffset + r.nextInt(8), 0, 0);
 			offset += 13;
 		}
@@ -850,7 +850,7 @@ public class JefImage {
 			}
 			return true;
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}
 	}

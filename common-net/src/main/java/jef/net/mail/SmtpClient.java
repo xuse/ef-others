@@ -22,6 +22,7 @@ import java.net.UnknownHostException;
 import jef.common.log.LogUtil;
 import jef.net.AuthenticationException;
 import jef.net.MessageClient;
+import jef.tools.Exceptions;
 import jef.tools.StringUtils;
 import jef.tools.support.JefBase64;
 
@@ -136,7 +137,7 @@ public class SmtpClient extends MessageClient {
 			assert250(processLine());
 			return true;
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}finally{
 			sendLine("RSET");
 			processLine();
@@ -189,7 +190,7 @@ public class SmtpClient extends MessageClient {
 		try {
 			sendLine(JefBase64.encode(message.getBytes("UTF-8")));
 		} catch (UnsupportedEncodingException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 
 		// 写尾
@@ -202,7 +203,7 @@ public class SmtpClient extends MessageClient {
 				return true;
 			}
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}finally{
 			sendLine("RSET");
 			processLine();
@@ -215,7 +216,7 @@ public class SmtpClient extends MessageClient {
 		try {
 			open();
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			throw new RuntimeException(e.getCause());
 		}	
 	}

@@ -26,16 +26,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 
-import jef.common.log.LogUtil;
+import org.xml.sax.SAXException;
+
 import jef.storage.FileManager.JFileInRecycleBin;
 import jef.storage.common.Storage;
 import jef.storage.common.StorageConfigurations;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.zip.ZipInputStream;
 import jef.tools.zip.ZipOutputStream;
-
-import org.xml.sax.SAXException;
 
 
 /**
@@ -53,7 +53,7 @@ final class FileHelper {
 			try {// 产生文件存储日志文件
 				XMLHelper.generateXML(fileDO.getStorageFolder(),fileDO.getCreateTimeString());
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		}
 	}

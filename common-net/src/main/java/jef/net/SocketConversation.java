@@ -23,12 +23,11 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
+import jef.tools.StringUtils;
 import jef.tools.support.JefBase64;
 import jef.ui.ConsoleConversation;
 import jef.ui.console.AbstractConsoleShell;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 可以在控制台上用命令行方式进行socket会话
@@ -59,7 +58,7 @@ public class SocketConversation extends ConsoleConversation<String>{
 							System.out.println(new String(JefBase64.decodeFast(code)));
 						}
 					} catch (IOException e) {
-						LogUtil.exception(e);
+						Exceptions.log(e);
 						break;
 					}	
 				}
@@ -83,7 +82,7 @@ public class SocketConversation extends ConsoleConversation<String>{
 			try {
 				client.close();
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 			client=null;
 		}
@@ -105,7 +104,7 @@ public class SocketConversation extends ConsoleConversation<String>{
 			OutputStream os = client.getOutputStream();
 			sockout = new PrintWriter(os, true);	
 		}catch(IOException e){
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}
 		return true;

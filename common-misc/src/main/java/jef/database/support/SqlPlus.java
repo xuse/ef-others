@@ -33,8 +33,6 @@ import java.util.prefs.Preferences;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
-import org.apache.commons.lang.ArrayUtils;
-
 import jef.common.log.LogUtil;
 import jef.database.DbCfg;
 import jef.database.DbClient;
@@ -45,6 +43,8 @@ import jef.database.meta.object.Column;
 import jef.database.meta.object.Index;
 import jef.database.meta.object.TableInfo;
 import jef.jre5support.script.JavaScriptUtil;
+import jef.tools.ArrayUtils;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.JefConfiguration;
 import jef.tools.StringUtils;
@@ -81,7 +81,6 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 	}
 
 	public void start() throws IOException {
-		LogUtil.useSlf4j = false;
 		if (db == null && StringUtils.isNotBlank(JefConfiguration.get(DbCfg.DB_NAME))) {
 			db = new DbClientBuilder().build();
 			LogUtil.show("database connected.");
@@ -127,7 +126,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 			spool = new OutputStreamWriter(os, "UTF-8");
 			LogUtil.addOutput(spool);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 
 	}
@@ -179,7 +178,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				p.put("lastConnected", url + "*" + user + "*" + password);
 				caseConnected(db, url, user, password);
 			} catch (Exception e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		}
 	}
@@ -292,7 +291,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 					LogUtil.show(StringUtils.rightPad(c.getColumnName(), 10) + "\t" + StringUtils.rightPad(c.getDataType(), 9) + "\t" + c.getColumnSize() + "\t" + (c.isNullable()? "null" : "not null") + "\t" + c.getRemarks());
 				}
 				LogUtil.show("======= Table " + tableName + " Primary key ========");
-				LogUtil.show(meta.getPrimaryKey(tableName));
+				LogUtil.show(meta.getPrimaryKey(tableName).orElse(null));
 
 				Collection<Index> is = meta.getIndexes(tableName);
 				LogUtil.show("======= Table " + tableName + " has " + is.size() + " indexes. ========");
@@ -329,14 +328,14 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 		BufferedReader reader = null;
 		ShellResult result = ShellResult.CONTINUE;
 		try {
-			reader = IOUtils.getReader(file, null);
+			reader = IOUtils.getReader(file, (String)null);
 			if (file.getName().endsWith(".js")) {
 				ScriptEngine e = JavaScriptUtil.newEngine();
 				e.put("db", db);
 				try {
 					e.eval(reader);
 				} catch (ScriptException e1) {
-					LogUtil.exception(e1);
+					Exceptions.log(e1);
 				}
 			} else {
 				String str;
@@ -354,7 +353,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				}
 			}
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} finally {
 			IOUtils.closeQuietly(reader);
 		}
@@ -368,7 +367,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				str = "exit";
 			return StringUtils.trimToNull(str);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return null;
 		}
 	}
@@ -440,7 +439,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 				if (!file.exists())
 					file.createNewFile();
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 			long last = file.lastModified();
 			if (Commands.execute("notepad.exe " + file.getAbsolutePath(),null) == 0) {
@@ -465,7 +464,7 @@ public class SqlPlus extends DefaultBatchConsoleShell implements ConsoleShell {
 					}
 				}
 			} catch (SQLException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		}
 		return RETURN_CONTINUE;

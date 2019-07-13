@@ -19,10 +19,10 @@ import java.io.File;
 import java.io.IOException;
 
 import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
+import jef.tools.StringUtils;
 import jef.ui.ConsoleConversation;
 import jef.ui.console.AbstractConsoleShell;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 可以在控制台上用命令行方式进行socket会话
@@ -131,7 +131,7 @@ public class FtpConversation extends ConsoleConversation<String> {
 				LogUtil.show(client.execute(str));
 			}
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 
@@ -140,7 +140,7 @@ public class FtpConversation extends ConsoleConversation<String> {
 			try {
 				client.close();
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 			client = null;
 		}
@@ -157,7 +157,7 @@ public class FtpConversation extends ConsoleConversation<String> {
 			current = client.pwd();
 			return true;
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}
 	}

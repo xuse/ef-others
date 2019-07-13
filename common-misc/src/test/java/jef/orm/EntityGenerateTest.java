@@ -3,14 +3,14 @@ package jef.orm;
 import java.io.File;
 import java.sql.SQLException;
 
-import jef.common.log.LogUtil;
-import jef.database.DbClientBuilder;
-import jef.database.DbUtils;
-
 import org.junit.Test;
 
 import com.github.geequery.codegen.EntityGenerator;
 import com.github.geequery.codegen.MetaProvider.DbClientProvider;
+
+import jef.database.DbClientBuilder;
+import jef.database.DbUtils;
+import jef.tools.Exceptions;
 
 public class EntityGenerateTest {
 
@@ -36,7 +36,7 @@ public class EntityGenerateTest {
 			g.setBasePackage("com.ailk.acct.payfee.acct.entity");
 			g.generateSchema();
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 }

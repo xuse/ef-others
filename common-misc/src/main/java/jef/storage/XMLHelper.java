@@ -24,17 +24,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import jef.common.log.LogUtil;
-import jef.storage.FileManager.JFileInRecycleBin;
-import jef.storage.common.Storage;
-import jef.storage.common.StorageConfigurations;
-import jef.tools.IOUtils;
-import jef.tools.XMLUtils;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import jef.common.log.LogUtil;
+import jef.storage.FileManager.JFileInRecycleBin;
+import jef.storage.common.Storage;
+import jef.storage.common.StorageConfigurations;
+import jef.tools.Exceptions;
+import jef.tools.IOUtils;
+import jef.tools.XMLUtils;
 
 final class XMLHelper {
 	private static ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>(){
@@ -83,7 +84,7 @@ final class XMLHelper {
 			XMLUtils.addElement(fileElement,"Description").setTextContent(fileDO.getDescription());
 			XMLUtils.saveDocument(document, new File(logPath));
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 
@@ -127,11 +128,11 @@ final class XMLHelper {
 				XMLUtils.saveDocument(document, new File(xmlFile.getCanonicalPath()));
 			}
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (ParseException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (SAXException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 		return fdoToReturn;
 	}
@@ -180,7 +181,7 @@ final class XMLHelper {
 				XMLUtils.saveDocument(document, new File(logPath));
 			}
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 

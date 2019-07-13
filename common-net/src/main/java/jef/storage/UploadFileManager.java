@@ -16,6 +16,7 @@ import jef.common.log.LogUtil;
 import jef.http.server.UploadFile;
 import jef.tools.Assert;
 import jef.tools.DateUtils;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.ThreadUtils;
@@ -255,7 +256,7 @@ public class UploadFileManager {
 							}
 						}
 					}catch(Exception e){
-						LogUtil.exception(e);
+						Exceptions.log(e);
 					}
 					
 				}

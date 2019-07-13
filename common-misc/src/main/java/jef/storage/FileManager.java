@@ -27,13 +27,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.xml.sax.SAXException;
+
 import jef.common.log.LogUtil;
 import jef.storage.common.Storage;
 import jef.storage.common.StorageConfigurations;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
-
-import org.xml.sax.SAXException;
 
 public class FileManager implements IFileManager {
 	private FileDAO fileDAO;
@@ -201,9 +202,9 @@ public class FileManager implements IFileManager {
 			importFromDevice(app);
 			clearByDevice(app);
 		} catch (SQLException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 
@@ -375,10 +376,10 @@ public class FileManager implements IFileManager {
 				return null;
 			}
 		} catch (SAXException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return null;
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return null;
 		}
 	}
@@ -392,9 +393,9 @@ public class FileManager implements IFileManager {
 		try {
 			return FileHelper.resore(file);
 		} catch (SAXException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 		return false;
 	}

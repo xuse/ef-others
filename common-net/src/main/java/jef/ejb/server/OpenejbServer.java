@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.ZipUtils;
 
@@ -30,7 +30,7 @@ public class OpenejbServer {
 			prepareConf(projectFolder,openEjbFolder);
 			runOpenEjbServer(projectFolder,openEjbFolder);
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 	

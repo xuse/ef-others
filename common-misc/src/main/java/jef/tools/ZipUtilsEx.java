@@ -15,7 +15,7 @@ public class ZipUtilsEx extends ZipUtils {
 		try {
 			ZipUtils.class.getClassLoader().loadClass("jef.tools.unrar.RarArchive");
 		} catch (ClassNotFoundException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class ZipUtilsEx extends ZipUtils {
 				return unzip(file, dest, null, cd);
 			}
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}
 	}

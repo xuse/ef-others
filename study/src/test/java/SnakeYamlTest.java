@@ -5,10 +5,10 @@ import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import com.alibaba.fastjson.JSON;
-import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
 
 import jef.tools.IOUtils;
+import jef.tools.io.Charsets;
 
 public class SnakeYamlTest {
 
@@ -23,7 +23,7 @@ public class SnakeYamlTest {
 
 	@Test
 	public void yamlBeanTest() throws IOException {
-		YamlReader reader = new YamlReader(IOUtils.getReader(this.getClass(),"/test_snake.yaml","UTF-8"));
+		YamlReader reader = new YamlReader(IOUtils.getReader(this.getClass(),"/test_snake.yaml",Charsets.UTF8));
 		Map demo = reader.read(Map.class);
 		reader.close();
 		System.out.println(JSON.toJSONString(demo));

@@ -34,12 +34,11 @@ import jef.common.log.LogUtil;
 import jef.dynamic.ClassSource.FileClassSource;
 import jef.tools.ArrayUtils;
 import jef.tools.Assert;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
-import jef.tools.reflect.ClassLoaderUtil;
+import jef.tools.StringUtils;
 import jef.tools.reflect.ClassEx;
-
-import org.apache.commons.lang.StringUtils;
-
+import jef.tools.reflect.ClassLoaderUtil;
 import sun.misc.Launcher;
 
 /**
@@ -149,7 +148,7 @@ public class DefaultCompiler implements jef.dynamic.Compiler{
 			if(cs.length==0)return null;
 			return new ClassEx(memLoader.loadClass(cs[0]));
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			throw new RuntimeException(e.getMessage());
 		}
 	}

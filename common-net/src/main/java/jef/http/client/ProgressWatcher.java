@@ -16,6 +16,7 @@
 package jef.http.client;
 
 import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 
 public class ProgressWatcher extends Thread{
 	private HttpSession session;
@@ -46,7 +47,7 @@ public class ProgressWatcher extends Thread{
 			try {
 				Thread.sleep(interval);
 			} catch (InterruptedException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		}
 	}

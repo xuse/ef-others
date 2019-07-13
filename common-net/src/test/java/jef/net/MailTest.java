@@ -3,6 +3,9 @@ package jef.net;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.Charset;
+
+import org.junit.Test;
 
 import jef.http.client.support.FilePart;
 import jef.http.client.support.HtmlPart;
@@ -15,8 +18,6 @@ import jef.net.mail.Pop3Client;
 import jef.net.mail.Pop3Client.MailBufferedReader;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
-
-import org.junit.Test;
 
 public class MailTest {
 
@@ -120,7 +121,7 @@ public class MailTest {
 					MailBufferedReader mm=pop3.fetchEx(s.getNum());
 					mm.setTotalSize(s.getSize());
 					File file=new File("c:/test0"+s.getNum()+".eml");
-					Writer w=IOUtils.getWriter(file, null);
+					Writer w=IOUtils.getWriter(file, Charset.defaultCharset());
 					String str=mm.readLine();
 					w.write(str);
 					for(str=mm.readLine();!".".equals(str);){

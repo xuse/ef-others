@@ -20,9 +20,9 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
-import jef.common.log.LogUtil;
 import jef.tools.Assert;
-import jef.tools.string.CharsetName;
+import jef.tools.Exceptions;
+import jef.tools.io.Charsets;
 
 public class StringMessage extends Message{
 	private String charSet = "UTF-8"; //默认UTF8编码
@@ -42,7 +42,7 @@ public class StringMessage extends Message{
 		try {
 			this.message=message.getBytes(charSet);
 		} catch (UnsupportedEncodingException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class StringMessage extends Message{
 	public byte getMessageCharSet() {
 		Charset c=Charset.forName(charSet);
 		Assert.notNull(c);
-		return (byte)CharsetName.getOrder(c);
+		return (byte)Charsets.getOrder(c);
 	}
 
 	

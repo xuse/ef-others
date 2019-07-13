@@ -20,7 +20,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.apache.commons.lang.StringUtils;
+import jef.tools.StringUtils;
 
 public class Swing {
 	public static File fileOpenDialog(String msg, int selectionMode,String defaultValue) {

@@ -25,6 +25,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import jef.common.log.LogUtil;
+import jef.tools.Exceptions;
 
 /**
  * Socket连接会话的抽象类
@@ -89,12 +90,12 @@ public abstract class MessageClient {
 				str = sockin.readLine();
 				if(isDebug())LogUtil.show(str);
 			} catch (IOException e1) {
-				LogUtil.exception(e1);
+				Exceptions.log(e1);
 			}
 			try {
 				client.close();
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 			sockin = null;
 			sockout = null;

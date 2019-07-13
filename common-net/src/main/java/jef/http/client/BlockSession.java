@@ -20,10 +20,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import jef.common.log.LogUtil;
 import jef.http.client.HttpTask.TaskState;
 import jef.http.client.support.HttpConnection;
 import jef.http.client.support.ThreadState;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.ThreadUtils;
@@ -221,7 +221,7 @@ public class BlockSession extends ConnectSession{
 					dlTask.setReturnObj(msg);
 				}	
 			}catch(IOException e){
-				LogUtil.exception(e);
+				Exceptions.log(e);
 				dlTask.setReturnType(ReturnType.ERROR_MESSAGE);
 				dlTask.setReturnObj(e.getMessage());
 				error=true;

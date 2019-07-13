@@ -1,4 +1,4 @@
-package jef;
+package jef.net;
 
 
 import java.awt.Color;
@@ -14,14 +14,14 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import jef.image.ImageType;
-import jef.image.JefImage;
-import jef.tools.IOUtils;
-
 import org.junit.Test;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
+import jef.image.ImageType;
+import jef.image.JefImage;
+import jef.tools.IOUtils;
 
 public class ImageTest {
 	@Test

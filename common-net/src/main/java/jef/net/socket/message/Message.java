@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 
-import org.apache.commons.lang.ArrayUtils;
+import jef.tools.ArrayUtils;
 
 public abstract class Message {
 	//一个消息的构成

@@ -1,4 +1,5 @@
 /*
+
  * JEF - Copyright 2009-2010 Jiyi (mr.jiyi@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,17 +31,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import jef.common.MimeTypes;
-import jef.common.log.LogUtil;
 import jef.http.UrlWrapper;
 import jef.http.client.support.HttpConnection;
 import jef.inner.sun.Headers;
 import jef.tools.ArrayUtils;
 import jef.tools.Assert;
 import jef.tools.ByteUtils;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
 import jef.tools.XMLUtils;
-import jef.tools.string.CharsetName;
+import jef.tools.io.Charsets;
 
 public class DLHelper {
 	public static URL toURL(String s) {
@@ -244,7 +245,7 @@ public class DLHelper {
 	 * @return
 	 */
 	public static boolean isValidIPAddr(String ip) {
-		String[] args = org.apache.commons.lang.StringUtils.split(ip, ".");
+		String[] args = org.apache.commons.lang3.StringUtils.split(ip, ".");
 		if (args.length != 4)
 			return false;
 		for (int i = 0; i < 4; i++) {
@@ -300,13 +301,13 @@ public class DLHelper {
 			out.writeObject(dlTask);
 			out.close();
 		} catch (IOException ex) {
-			LogUtil.exception(ex);
+			Exceptions.log(ex);
 			throw new RuntimeException(ex);
 		} finally {
 			try {
 				out.close();
 			} catch (IOException ex) {
-				LogUtil.exception(ex);
+				Exceptions.log(ex);
 				throw new RuntimeException(ex);
 			}
 		}
@@ -431,7 +432,7 @@ public class DLHelper {
 				s = s.substring(0, n);
 			}
 			if(s.length()==0)return null;
-			s = CharsetName.getStdName(s);
+			s = Charsets.getStdName(s);
 			return s;
 		}else{
 			return null;

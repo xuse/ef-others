@@ -37,6 +37,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+
+import com.google.common.base.Charsets;
+
 import jef.common.Entry;
 import jef.common.log.FileLogger;
 import jef.common.log.LogUtil;
@@ -50,6 +55,7 @@ import jef.http.client.ui.TaskBatchModifyConversation;
 import jef.http.client.ui.TaskEditConversation;
 import jef.tools.ArrayUtils;
 import jef.tools.Assert;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.JefConfiguration;
 import jef.tools.StringUtils;
@@ -57,9 +63,6 @@ import jef.tools.ThreadUtils;
 import jef.tools.algorithm.Sorts;
 import jef.tools.string.StringParser;
 import jef.ui.ConsoleShell;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentFragment;
 
 /**
  * Http引擎接口类，包含一个任务调度线程。
@@ -462,7 +465,7 @@ public class HttpEngine {
 			file = IOUtils.escapeExistFile(file);
 		}
 		int n;
-		BufferedWriter w = IOUtils.getWriter(file, "UTF-8", false);
+		BufferedWriter w = IOUtils.getWriter(file,Charsets.UTF_8, false);
 		if (!simple) {
 			w.write(TaskDub.getCSVHeader());
 			w.write(StringUtils.CRLF_STR);
@@ -788,14 +791,14 @@ public class HttpEngine {
 			try {
 				exportFile(text[1], false,ArrayUtils.subArray(text, 2, text.length));
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		} else if (text[0].equals("csv")) {// 用于导出某类内容效果等同于 export csv
 			Assert.isTrue(text.length > 1, "参数不正确。");
 			try {
 				exportFile(text[1],true, ArrayUtils.subArray(text, 2, text.length));
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		} else if (text[0].equals("import")) {// 用于导入某类内容
 			Assert.isTrue(text.length > 1, "参数不正确。");
@@ -804,7 +807,7 @@ public class HttpEngine {
 				if(!file.exists())file=new File(text[1]+".csv");
 				if(file.exists())importFile(file);
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		} else if (text[0].equals("break")) {// 强行停止任务，并排到队尾 (任务范围语法)
 			Assert.isTrue(text.length > 1, "参数不正确。");
@@ -1027,7 +1030,7 @@ public class HttpEngine {
 				try {
 					Thread.sleep(1000);// 每等1秒检查一次运行队列，如果不为始终等待
 				} catch (InterruptedException e) {
-					LogUtil.exception(e);
+					Exceptions.log(e);
 				}
 				if (lastProcessing > session.processing.size()) {
 					LogUtil.show("还有" + session.processing.size() + "任务在下载…");

@@ -22,11 +22,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jef.common.log.LogUtil;
 import jef.http.server.ServletExchangeImpl;
-import jef.http.server.WebExchange;
-
-import org.apache.commons.lang.StringUtils;
+import jef.tools.Exceptions;
+import jef.tools.StringUtils;
 
 /**
  * Servlet转调用Action的适配器类
@@ -61,7 +59,7 @@ public class DefaultServlet extends HttpServlet {
 			Class<?> c = Class.forName(className.trim());
 			this.defaultHandler = (HttpAction) c.newInstance();
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 		String register = super.getInitParameter("register");
 		if (StringUtils.isNotEmpty(register)) {

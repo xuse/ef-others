@@ -9,6 +9,7 @@ import java.net.URI;
 
 import jef.common.MimeTypes;
 import jef.common.log.LogUtil;
+import jef.tools.DateFormats;
 import jef.tools.DateUtils;
 import jef.tools.IOUtils;
 import jef.tools.StringUtils;
@@ -119,7 +120,7 @@ final class ResourceHandler implements HttpHandler {
 		exchange.print("&nbsp;</a></td><td>");
 		exchange.print(sub.isDirectory() ? "&lt;DIR&gt;&nbsp;" : StringUtils.formatSize(sub.length()));
 		exchange.print("</td><td>\r\n");
-		exchange.print(DateUtils.format(sub.lastModified()));
+		exchange.print(DateFormats.DATE_CS.format(sub.lastModified()));
 		exchange.print("</td></tr>\r\n");
 	}
 

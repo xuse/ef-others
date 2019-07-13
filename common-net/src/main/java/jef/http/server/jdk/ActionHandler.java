@@ -2,12 +2,12 @@ package jef.http.server.jdk;
 
 import java.io.IOException;
 
-import jef.common.log.LogUtil;
-import jef.http.server.WebExchange;
-import jef.http.server.actions.HttpAction;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import jef.http.server.WebExchange;
+import jef.http.server.actions.HttpAction;
+import jef.tools.Exceptions;
 
 @SuppressWarnings("restriction")
 public class ActionHandler implements HttpHandler {
@@ -40,7 +40,7 @@ public class ActionHandler implements HttpHandler {
 		} catch (Exception e) {
 			we.setStatus(500);
 			we.printStackTrace(e);
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} finally {
 			we.close();
 		}

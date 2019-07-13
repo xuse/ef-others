@@ -17,13 +17,13 @@ package jef.net.socket;
 
 import java.io.File;
 
-import jef.common.log.LogUtil;
 import jef.net.socket.message.FileMessage;
 import jef.net.socket.message.Message;
 import jef.net.socket.message.SerializableObjectMessage;
 import jef.net.socket.message.StreamMessage;
 import jef.net.socket.message.StringMessage;
-import jef.tools.DateUtils;
+import jef.tools.DateFormats;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 
 public class DefaultSocketAction extends SocketAction {
@@ -47,9 +47,9 @@ public class DefaultSocketAction extends SocketAction {
 				System.out.println(obj.toString());
 			}
 		} catch (Exception e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
-		return new StringMessage(DateUtils.format(System.currentTimeMillis()));
+		return new StringMessage(DateFormats.DATE_CS.format(System.currentTimeMillis()));
 	}
 
 }

@@ -11,20 +11,20 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
-import jef.common.log.LogUtil;
-import jef.net.ftp.FtpConnectInfo;
-import jef.tools.Assert;
-import jef.tools.IOUtils;
-import jef.tools.reflect.BeanUtils;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.ChannelSftp.LsEntry;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
+
+import jef.common.log.LogUtil;
+import jef.net.ftp.FtpConnectInfo;
+import jef.tools.Assert;
+import jef.tools.Exceptions;
+import jef.tools.IOUtils;
+import jef.tools.StringUtils;
+import jef.tools.reflect.BeanUtils;
 
 /**
  * SFTP的实现
@@ -115,7 +115,7 @@ public class SFtpImpl extends jef.net.ftp.client.AbstractFtpClient implements Ft
 			this.state=new ClientStatus(this, ftp.pwd());
 			return true;	
 		}catch(Exception e){
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}
 	}
@@ -265,15 +265,15 @@ public class SFtpImpl extends jef.net.ftp.client.AbstractFtpClient implements Ft
 				result = result + c;
 			}
 		} catch (SftpException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} finally {
 			try {
 				is.close();
 				os.close();
 			} catch (IOException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		}
 		return result;
@@ -457,7 +457,7 @@ public class SFtpImpl extends jef.net.ftp.client.AbstractFtpClient implements Ft
 			ftp.mkdir(dir);
 			return true;
 		} catch (SftpException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 			return false;
 		}
 	}
@@ -517,7 +517,7 @@ public class SFtpImpl extends jef.net.ftp.client.AbstractFtpClient implements Ft
 						e.setLink(link);
 					}
 				} catch (SftpException e1) {
-					LogUtil.exception(e1);
+					Exceptions.log(e1);
 				}
 			}else if(attr.isDir()){
 				e.setType(FtpEntry.TYPE_DIRECTORY);

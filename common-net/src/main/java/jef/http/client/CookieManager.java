@@ -25,14 +25,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.xml.sax.SAXException;
+
 import jef.common.log.LogUtil;
 import jef.http.client.support.Cookie;
 import jef.tools.ArrayUtils;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.JXB;
 import jef.tools.StringUtils;
-
-import org.xml.sax.SAXException;
 
 public class CookieManager implements Serializable{
 	private static final long serialVersionUID = -4474061474173390959L;
@@ -257,13 +258,13 @@ public class CookieManager implements Serializable{
 			this.domains=(Map<String, Domain>) dummy[0];
 			this.wildcardDomains=(List<Domain>) dummy[1];
 		} catch (SAXException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (InstantiationException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		} catch (IllegalAccessException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 	

@@ -22,11 +22,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import jef.common.log.LogUtil;
 import jef.common.wrapper.Paginator;
 import jef.http.client.HostManager;
 import jef.http.client.HostProfile;
 import jef.http.client.support.PostDownCfg;
+import jef.tools.Exceptions;
 import jef.tools.StringUtils;
 import jef.ui.ConsoleShell;
 
@@ -39,7 +39,7 @@ public class HostEditConversation extends AbstractEditConversation<HostProfile> 
 		try {
 			HostManager.saveToFile(null);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 
@@ -50,7 +50,7 @@ public class HostEditConversation extends AbstractEditConversation<HostProfile> 
 				URL u = new URL(name);
 				name = u.getHost().toLowerCase();
 			} catch (MalformedURLException e) {
-				LogUtil.exception(e);
+				Exceptions.log(e);
 			}
 		}
 		if(StringUtils.isNotEmpty(name))host.setHost(name);
@@ -176,7 +176,7 @@ public class HostEditConversation extends AbstractEditConversation<HostProfile> 
 		try {
 			HostManager.loadFromFile(null);
 		} catch (IOException e) {
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 	}
 }

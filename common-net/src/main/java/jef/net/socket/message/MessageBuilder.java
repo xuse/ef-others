@@ -28,7 +28,7 @@ import jef.common.BigDataBuffer;
 import jef.net.socket.SocketExchange;
 import jef.net.socket.message.FileMessage.FileNamePart;
 import jef.tools.IOUtils;
-import jef.tools.string.CharsetName;
+import jef.tools.io.Charsets;
 
 public class MessageBuilder {
 	public static Message build(SocketExchange exchange) throws IOException {
@@ -86,7 +86,7 @@ public class MessageBuilder {
 	//从数据流构造消息，接收时使用
 	private static Message createMessage(MessageHeader mh, InputStream in) throws IOException {
 		if(mh.getMessageType()==Message.STRING_MESSAGE){
-			return new StringMessage(IOUtils.toByteArray(in,(int)mh.getContentLength()),CharsetName.getName(mh.getCharset()));
+			return new StringMessage(IOUtils.toByteArray(in,(int)mh.getContentLength()),Charsets.getName(mh.getCharset()));
 		}else if(mh.getMessageType()==	Message.STREAM_MESSAGE){
 			//System.out.println("构造了长度为"+mh.getContentLength()+"的StreamMessage");
 			BigDataBuffer bb=IOUtils.asBigDataBuffer(in, mh.getContentLength());
@@ -125,7 +125,7 @@ public class MessageBuilder {
 			}
 		}else if(mh.getMessageType()==	Message.PART_FILENAME){
 			//System.out.print("构造了长度为"+mh.getContentLength()+"的PART_FILENAME");
-			return new FileNamePart(IOUtils.toByteArray(in,(int)mh.getContentLength()),CharsetName.getName(mh.getCharset()));
+			return new FileNamePart(IOUtils.toByteArray(in,(int)mh.getContentLength()),Charsets.getName(mh.getCharset()));
 		}else{
 			throw new IllegalArgumentException("Illegal Message type:" +mh.getMessageType());			
 		}

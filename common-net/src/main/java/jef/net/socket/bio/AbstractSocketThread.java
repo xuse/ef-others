@@ -11,6 +11,7 @@ import java.util.Map;
 import jef.common.log.LogUtil;
 import jef.net.socket.NetEventListener;
 import jef.net.socket.SocketServer;
+import jef.tools.Exceptions;
 import jef.tools.IOUtils;
 import jef.tools.security.IChannel;
 
@@ -80,7 +81,7 @@ public abstract class AbstractSocketThread extends Thread implements Closeable {
 		try{
 			this.channel=initChannel(s);
 		}catch(Exception e){
-			LogUtil.exception(e);
+			Exceptions.log(e);
 		}
 		if(channel==null){
 			try {

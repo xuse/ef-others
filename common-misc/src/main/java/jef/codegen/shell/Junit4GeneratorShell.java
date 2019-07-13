@@ -19,9 +19,9 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import com.github.geequery.codegen.Junit4Generator;
-import jef.ui.swing.PanelWrapper;
 
-import org.apache.commons.lang.StringUtils;
+import jef.tools.StringUtils;
+import jef.ui.swing.PanelWrapper;
 
 
 public class Junit4GeneratorShell extends BaseModelGenerator{
